@@ -1,0 +1,21 @@
+{
+  "governance": {
+    "version": "1.0.0",
+    "templates": {
+      "epic": "templates/epic-template.md",
+      "feature": "templates/feature-template.md",
+      "task": "templates/task-template.md"
+    },
+    "workflows": {
+      "issue_automation": ".github/workflows/issue-automation.yml",
+      "project_sync": ".github/workflows/project-sync.yml"
+    },
+    "labels": {
+      "epic": { "color": "8B4789", "description": "Epic-level work items" },
+      "feature": { "color": "0366d6", "description": "Feature development" },
+      "task": { "color": "28a745", "description": "Implementation tasks" },
+      "bug": { "color": "d73a49", "description": "Bug fixes" },
+      "enhancement": { "color": "a2eeef", "description": "Enhancements" }
+    }
+  }
+}

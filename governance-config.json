@@ -7,12 +7,24 @@
       "governance_engine": {
         "database": "mongodb://mongodb:27017/governance",
         "cache": "redis://redis:6379/0",
-        "port": 8001
+        "port": 8001,
+        "ai_integration": {
+          "provider": "ai-provider-factory",
+          "endpoint": "http://ai-provider-factory:8100",
+          "primary_tasks": ["PLANNING", "ANALYSIS", "THINKING"],
+          "fallback_enabled": true
+        }
       },
       "issue_management": {
         "database": "postgresql://supabase:5432/governance",
         "cache": "redis://redis:6379/1", 
-        "port": 8002
+        "port": 8002,
+        "ai_integration": {
+          "provider": "ai-provider-factory",
+          "endpoint": "http://ai-provider-factory:8100",
+          "primary_tasks": ["WRITING", "ANALYSIS"],
+          "content_enhancement": true
+        }
       },
       "project_orchestration": {
         "database": "mongodb://mongodb:27017/governance",
@@ -22,11 +34,58 @@
       "analytics_reporting": {
         "database": "postgresql://supabase:5432/governance",
         "cache": "redis://redis:6379/3",
-        "port": 8004
+        "port": 8004,
+        "ai_integration": {
+          "provider": "ai-provider-factory",
+          "endpoint": "http://ai-provider-factory:8100",
+          "primary_tasks": ["ANALYSIS", "WRITING", "THINKING"],
+          "predictive_analytics": true
+        }
       },
       "event_processing": {
         "cache": "redis://redis:6379/4",
         "port": 8005
+      },
+      "agent_service_gateway": {
+        "database": "mongodb://mongodb:27017/governance",
+        "cache": "redis://redis:6379/7",
+        "port": 8008,
+        "ai_integration": {
+          "provider": "ai-provider-factory",
+          "endpoint": "http://ai-provider-factory:8100",
+          "primary_tasks": ["THINKING", "ANALYSIS"],
+          "intelligent_assignment": true
+        }
+      }
+    },
+    "ai_provider_configuration": {
+      "primary_models": {
+        "planning": "VS Code LM API (gpt-4o)",
+        "analysis": "OpenAI GPT-4",
+        "writing": "Claude Sonnet 3.5",
+        "thinking": "OpenAI GPT-4",
+        "research": "Perplexity Pro"
+      },
+      "fallback_models": {
+        "planning": "Claude Sonnet 3.5",
+        "analysis": "Claude Sonnet 3.5", 
+        "writing": "OpenAI GPT-4",
+        "thinking": "Claude Sonnet 3.5",
+        "research": "OpenAI GPT-4"
+      },
+      "task_type_mapping": {
+        "epic_generation": "PLANNING",
+        "feature_breakdown": "PLANNING",
+        "issue_enhancement": "WRITING",
+        "compliance_monitoring": "ANALYSIS",
+        "predictive_analytics": "ANALYSIS",
+        "agent_assignment": "THINKING",
+        "risk_assessment": "ANALYSIS"
+      },
+      "confidence_thresholds": {
+        "minimum_confidence": 0.7,
+        "human_review_threshold": 0.5,
+        "auto_approve_threshold": 0.9
       }
     },
     "templates": {

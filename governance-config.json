@@ -1,21 +1,415 @@
 {
   "governance": {
-    "version": "1.0.0",
+    "version": "2.0.0",
+    "organization": "frankmax-com",
+    "repository": "AI-DevOps-System",
+    "microservices": {
+      "governance_engine": {
+        "database": "mongodb://mongodb:27017/governance",
+        "cache": "redis://redis:6379/0",
+        "port": 8001
+      },
+      "issue_management": {
+        "database": "postgresql://supabase:5432/governance",
+        "cache": "redis://redis:6379/1", 
+        "port": 8002
+      },
+      "project_orchestration": {
+        "database": "mongodb://mongodb:27017/governance",
+        "cache": "redis://redis:6379/2",
+        "port": 8003
+      },
+      "analytics_reporting": {
+        "database": "postgresql://supabase:5432/governance",
+        "cache": "redis://redis:6379/3",
+        "port": 8004
+      },
+      "event_processing": {
+        "cache": "redis://redis:6379/4",
+        "port": 8005
+      }
+    },
     "templates": {
       "epic": "templates/epic-template.md",
-      "feature": "templates/feature-template.md",
+      "feature": "templates/feature-template.md", 
       "task": "templates/task-template.md"
     },
     "workflows": {
-      "issue_automation": ".github/workflows/issue-automation.yml",
-      "project_sync": ".github/workflows/project-sync.yml"
+      "microservices_deployment": "docker-compose.yml",
+      "governance_generation": "generate-governance.py",
+      "event_processing": "event-driven-automation"
     },
     "labels": {
-      "epic": { "color": "8B4789", "description": "Epic-level work items" },
-      "feature": { "color": "0366d6", "description": "Feature development" },
+      "epic": { "color": "8B4789", "description": "Epic-level strategic initiatives" },
+      "feature": { "color": "0366d6", "description": "Feature development work" },
       "task": { "color": "28a745", "description": "Implementation tasks" },
-      "bug": { "color": "d73a49", "description": "Bug fixes" },
-      "enhancement": { "color": "a2eeef", "description": "Enhancements" }
+      "bug": { "color": "d73a49", "description": "Bug fixes and issues" },
+      "enhancement": { "color": "a2eeef", "description": "Enhancements and improvements" },
+      "agent:orchestrator": { "color": "FF6B35", "description": "Orchestrator service coordination" },
+      "agent:dev": { "color": "4ECDC4", "description": "Development agent service" },
+      "agent:ai-provider": { "color": "45B7D1", "description": "AI provider agent service" },
+      "agent:qa": { "color": "96CEB4", "description": "QA agent service testing" },
+      "agent:security": { "color": "FFEAA7", "description": "Security agent service" },
+      "agent:release": { "color": "DDA0DD", "description": "Release agent service" },
+      "agent:pm": { "color": "98D8C8", "description": "Project management agent service" },
+      "agent:audit": { "color": "F7DC6F", "description": "Audit service compliance" },
+      "status:planning": { "color": "FEF9E7", "description": "Planning and design phase" },
+      "status:in-progress": { "color": "EBF3FD", "description": "Active development" },
+      "status:review": { "color": "FDF2E9", "description": "Under review" },
+      "status:done": { "color": "E8F5E8", "description": "Completed work" },
+      "status:blocked": { "color": "FADBD8", "description": "Blocked or waiting" },
+      "priority:critical": { "color": "B60205", "description": "Critical priority" },
+      "priority:high": { "color": "D93F0B", "description": "High priority" },
+      "priority:medium": { "color": "FBCA04", "description": "Medium priority" },
+      "priority:low": { "color": "0E8A16", "description": "Low priority" }
+    },
+    "epics": {
+      "infrastructure-foundation": {
+        "title": "Epic: Infrastructure Foundation Platform",
+        "description": "Build the foundational infrastructure components for the AI DevOps system including git architecture, monitoring, security, and containerization",
+        "labels": ["epic", "agent:orchestrator", "status:in-progress", "priority:critical"],
+        "milestone": "q1-2025",
+        "features": [
+          "git-subtree-architecture",
+          "monitoring-logging-platform", 
+          "security-scanning-framework",
+          "docker-containerization",
+          "github-governance-factory"
+        ]
+      },
+      "agent-services-platform": {
+        "title": "Epic: Intelligent Agent Services Platform",
+        "description": "Develop and deploy the complete suite of AI-powered agent services for automated development, testing, security, and operations",
+        "labels": ["epic", "agent:orchestrator", "status:planning", "priority:critical"],
+        "milestone": "q2-2025",
+        "features": [
+          "orchestrator-service",
+          "dev-agent-service",
+          "ai-provider-service", 
+          "qa-agent-service",
+          "security-agent-service",
+          "release-agent-service",
+          "pm-agent-service",
+          "audit-service"
+        ]
+      },
+      "developer-experience": {
+        "title": "Epic: Developer Experience Enhancement Platform",
+        "description": "Enhance developer productivity through automation, tooling improvements, and streamlined workflows",
+        "labels": ["epic", "agent:dev", "status:planning", "priority:high"],
+        "milestone": "q2-2025",
+        "features": [
+          "development-workflow-automation",
+          "enhanced-developer-tooling",
+          "documentation-enhancement",
+          "developer-onboarding",
+          "code-quality-automation"
+        ]
+      },
+      "security-compliance": {
+        "title": "Epic: Security and Compliance Framework",
+        "description": "Implement comprehensive security and compliance framework across all services with automated scanning and governance",
+        "labels": ["epic", "agent:security", "status:planning", "priority:critical"],
+        "milestone": "q3-2025",
+        "features": [
+          "automated-security-scanning",
+          "compliance-monitoring",
+          "incident-response-automation",
+          "security-training-governance",
+          "vulnerability-management"
+        ]
+      },
+      "azure-devops-integration": {
+        "title": "Epic: Azure DevOps Integration Platform",
+        "description": "Complete integration with Azure DevOps for project lifecycle management, work items, and CI/CD pipelines",
+        "labels": ["epic", "agent:dev", "status:planning", "priority:high"],
+        "milestone": "q1-2025",
+        "features": [
+          "azure-devops-project-management",
+          "work-item-automation",
+          "cicd-pipeline-integration",
+          "azure-repos-integration",
+          "azure-analytics-reporting"
+        ]
+      }
+    },
+    "features": {
+      "git-subtree-architecture": {
+        "title": "Feature: Git Subtree Architecture Implementation",
+        "description": "Implement git subtree architecture for modular agent services with 8 services configured as subtrees",
+        "labels": ["feature", "agent:orchestrator", "status:in-progress", "priority:critical"],
+        "parent_epic": "infrastructure-foundation",
+        "tasks": [
+          "configure-orchestrator-subtree",
+          "configure-dev-agent-subtree",
+          "configure-ai-provider-subtree",
+          "configure-qa-agent-subtree",
+          "configure-security-agent-subtree",
+          "configure-release-agent-subtree",
+          "configure-pm-agent-subtree",
+          "configure-audit-service-subtree",
+          "update-subtree-documentation",
+          "create-developer-onboarding-guide"
+        ]
+      },
+      "monitoring-logging-platform": {
+        "title": "Feature: Real-time Monitoring and Logging Platform",
+        "description": "Implement comprehensive monitoring with Prometheus, Grafana dashboards, structured logging, and alerting",
+        "labels": ["feature", "agent:orchestrator", "status:planning", "priority:high"],
+        "parent_epic": "infrastructure-foundation",
+        "tasks": [
+          "setup-prometheus-metrics",
+          "configure-grafana-dashboards",
+          "implement-structured-logging",
+          "setup-elk-stack-aggregation",
+          "configure-alerting-rules",
+          "implement-health-check-endpoints",
+          "setup-service-discovery",
+          "configure-log-retention-policies"
+        ]
+      },
+      "orchestrator-service": {
+        "title": "Feature: Orchestrator Service Implementation",
+        "description": "Central coordination engine with intelligent routing, agent management, and workflow orchestration",
+        "labels": ["feature", "agent:orchestrator", "status:in-progress", "priority:critical"],
+        "parent_epic": "agent-services-platform",
+        "tasks": [
+          "implement-fastapi-application",
+          "setup-azure-devops-webhooks",
+          "implement-agent-discovery",
+          "create-intelligent-routing-engine",
+          "setup-work-assignment-tracking",
+          "implement-agent-health-monitoring",
+          "create-performance-analytics",
+          "setup-load-balancing"
+        ]
+      },
+      "dev-agent-service": {
+        "title": "Feature: Development Agent Service Implementation", 
+        "description": "Automated development agent with Azure DevOps integration, GitHub integration, and code generation capabilities",
+        "labels": ["feature", "agent:dev", "status:in-progress", "priority:critical"],
+        "parent_epic": "agent-services-platform", 
+        "tasks": [
+          "implement-azure-devops-integration",
+          "implement-github-integration",
+          "setup-automated-code-review",
+          "configure-cicd-integration",
+          "implement-code-quality-checks",
+          "setup-template-engine",
+          "create-scaffolding-automation",
+          "implement-performance-monitoring"
+        ]
+      },
+      "ai-provider-service": {
+        "title": "Feature: AI Provider Agent Service Implementation",
+        "description": "Multi-provider AI service with intelligent routing, cost tracking, and model governance",
+        "labels": ["feature", "agent:ai-provider", "status:planning", "priority:critical"],
+        "parent_epic": "agent-services-platform",
+        "tasks": [
+          "implement-multi-provider-support",
+          "configure-openai-integration", 
+          "configure-azure-openai-integration",
+          "implement-request-routing",
+          "setup-rate-limiting-throttling",
+          "implement-cost-tracking",
+          "configure-model-governance",
+          "setup-context-filtering"
+        ]
+      },
+      "qa-agent-service": {
+        "title": "Feature: Quality Assurance Agent Service Implementation",
+        "description": "Automated testing with test generation, execution orchestration, and comprehensive quality assurance",
+        "labels": ["feature", "agent:qa", "status:planning", "priority:high"],
+        "parent_epic": "agent-services-platform",
+        "tasks": [
+          "implement-automated-test-generation",
+          "configure-test-execution-orchestration",
+          "setup-performance-testing",
+          "implement-security-testing-automation",
+          "configure-accessibility-testing",
+          "setup-test-reporting-analytics",
+          "implement-test-data-management",
+          "configure-cicd-integration"
+        ]
+      },
+      "security-agent-service": {
+        "title": "Feature: Security Agent Service Implementation",
+        "description": "Comprehensive security service with vulnerability scanning, threat detection, and compliance monitoring",
+        "labels": ["feature", "agent:security", "status:planning", "priority:critical"],
+        "parent_epic": "agent-services-platform",
+        "tasks": [
+          "implement-vulnerability-scanning",
+          "setup-threat-detection-engine",
+          "configure-security-compliance-monitoring",
+          "implement-incident-response-automation",
+          "setup-security-metrics-reporting",
+          "configure-penetration-testing",
+          "implement-security-training-integration",
+          "setup-security-audit-trails"
+        ]
+      },
+      "release-agent-service": {
+        "title": "Feature: Release Agent Service Implementation", 
+        "description": "Automated release management with deployment orchestration, rollback procedures, and release analytics",
+        "labels": ["feature", "agent:release", "status:planning", "priority:high"],
+        "parent_epic": "agent-services-platform",
+        "tasks": [
+          "implement-deployment-orchestration",
+          "setup-automated-rollback-procedures",
+          "configure-release-pipeline-automation",
+          "implement-environment-management",
+          "setup-release-analytics-reporting",
+          "configure-blue-green-deployments",
+          "implement-canary-release-strategy",
+          "setup-release-approval-workflows"
+        ]
+      },
+      "pm-agent-service": {
+        "title": "Feature: Project Management Agent Service Implementation",
+        "description": "AI-powered project management with epic decomposition, sprint planning, and stakeholder communication",
+        "labels": ["feature", "agent:pm", "status:planning", "priority:high"],
+        "parent_epic": "agent-services-platform",
+        "tasks": [
+          "implement-epic-decomposition-engine",
+          "setup-automated-sprint-planning",
+          "configure-capacity-management",
+          "implement-stakeholder-communication",
+          "setup-business-value-assessment",
+          "configure-velocity-tracking",
+          "implement-risk-assessment",
+          "setup-executive-reporting"
+        ]
+      },
+      "audit-service": {
+        "title": "Feature: Audit Service Implementation",
+        "description": "Comprehensive audit trails, compliance monitoring, and regulatory reporting for enterprise governance",
+        "labels": ["feature", "agent:audit", "status:planning", "priority:medium"],
+        "parent_epic": "agent-services-platform",
+        "tasks": [
+          "implement-audit-trail-collection",
+          "setup-compliance-monitoring",
+          "configure-regulatory-reporting",
+          "implement-change-tracking",
+          "setup-access-control-auditing",
+          "configure-data-retention-policies",
+          "implement-audit-analytics",
+          "setup-compliance-dashboards"
+        ]
+      },
+      "development-workflow-automation": {
+        "title": "Feature: Development Workflow Automation",
+        "description": "Automate common development workflows including testing, deployments, code formatting, and dependency updates",
+        "labels": ["feature", "agent:dev", "status:planning", "priority:high"],
+        "parent_epic": "developer-experience",
+        "tasks": [
+          "setup-automated-testing-pipelines",
+          "configure-automated-deployments",
+          "implement-automated-code-formatting",
+          "setup-automated-dependency-updates",
+          "configure-automated-security-scanning",
+          "implement-automated-documentation",
+          "setup-automated-performance-testing",
+          "configure-automated-rollback"
+        ]
+      },
+      "azure-devops-project-management": {
+        "title": "Feature: Azure DevOps Project Management Integration",
+        "description": "Complete integration with Azure DevOps for project lifecycle management and work item automation",
+        "labels": ["feature", "agent:dev", "status:planning", "priority:high"],
+        "parent_epic": "azure-devops-integration",
+        "tasks": [
+          "implement-project-creation-automation",
+          "setup-work-item-synchronization",
+          "configure-team-management",
+          "implement-permission-management",
+          "setup-project-templates",
+          "configure-dashboard-creation",
+          "implement-reporting-automation",
+          "setup-project-archival"
+        ]
+      }
+    },
+    "milestones": {
+      "q1-2025": {
+        "title": "Q1 2025 - Foundation Platform Complete",
+        "description": "Core infrastructure and orchestrator service operational with git architecture implemented",
+        "due_date": "2025-03-31",
+        "state": "open",
+        "epics": ["infrastructure-foundation", "azure-devops-integration"]
+      },
+      "q2-2025": {
+        "title": "Q2 2025 - Agent Services Platform Deployed",
+        "description": "All 8 agent services deployed and operational with comprehensive developer experience",
+        "due_date": "2025-06-30", 
+        "state": "open",
+        "epics": ["agent-services-platform", "developer-experience"]
+      },
+      "q3-2025": {
+        "title": "Q3 2025 - Security and Optimization Complete",
+        "description": "Security framework and performance optimization with enterprise-grade compliance",
+        "due_date": "2025-09-30",
+        "state": "open", 
+        "epics": ["security-compliance"]
+      },
+      "q4-2025": {
+        "title": "Q4 2025 - Enterprise Production Ready",
+        "description": "Full enterprise deployment with advanced features and global scaling capabilities",
+        "due_date": "2025-12-31",
+        "state": "open",
+        "epics": []
+      }
+    },
+    "project_templates": {
+      "portfolio_governance": {
+        "name": "AI DevOps System - Portfolio Governance",
+        "template": "roadmap",
+        "description": "Strategic oversight and Epic coordination across all services"
+      },
+      "epic_planning": {
+        "name": "AI DevOps System - Epic Planning",
+        "template": "feature planning", 
+        "description": "Epic-level feature planning and coordination"
+      },
+      "sprint_board": {
+        "name": "AI DevOps System - Sprint Board",
+        "template": "team planning",
+        "description": "Active development sprint management and task coordination"
+      },
+      "infrastructure_management": {
+        "name": "AI DevOps System - Infrastructure",
+        "template": "task board",
+        "description": "Infrastructure and platform management tasks"
+      },
+      "security_compliance": {
+        "name": "AI DevOps System - Security & Compliance",
+        "template": "bug triage",
+        "description": "Security issues, vulnerabilities, and compliance tracking"
+      },
+      "release_management": {
+        "name": "AI DevOps System - Release Management", 
+        "template": "release planning",
+        "description": "Release planning, deployment coordination, and rollout management"
+      }
+    },
+    "issue_hierarchy": {
+      "epic_to_feature_linking": true,
+      "feature_to_task_linking": true,
+      "milestone_linking": true,
+      "project_linking": true,
+      "auto_labeling": true,
+      "cross_reference_format": "Related to #{parent_issue_number}",
+      "epic_prefix": "Epic:",
+      "feature_prefix": "Feature:",
+      "task_prefix": "Task:"
+    },
+    "execution_settings": {
+      "create_projects": true,
+      "create_issues": true,
+      "apply_labels": true,
+      "link_milestones": true,
+      "setup_project_automation": true,
+      "generate_audit_trail": true,
+      "dry_run": false
     }
   }
 }

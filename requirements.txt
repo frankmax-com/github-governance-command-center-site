@@ -1,7 +1,7 @@
 # Core Framework Dependencies
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-pydantic==2.5.0
+pydantic>=2.11.7,<3.0.0
 click==8.1.7
 
 # Async HTTP Client
@@ -10,7 +10,7 @@ aiohttp==3.9.1
 # Database Dependencies
 motor==3.3.2                    # Async MongoDB driver
 pymongo==4.6.0                  # MongoDB driver
-supabase==2.0.5                 # Supabase client
+supabase==2.18.1                # Supabase client (latest available)
 redis==5.0.1                    # Redis client
 
 # Configuration and Environment

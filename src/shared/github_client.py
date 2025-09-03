@@ -38,7 +38,7 @@ class GitHubAPIClient:
         self.timeout = aiohttp.ClientTimeout(total=30)
     
     # =============================================================================
-    # REPOSITORY OPERATIONS
+    # REPOSITORY OPERATIONS  
     # =============================================================================
     
     async def get_repository(self, owner: str, repo: str) -> Dict[str, Any]:
@@ -66,6 +66,43 @@ class GitHubAPIClient:
             'gitignore_template': 'Python'
         }
         return await self._make_request('POST', url, json=data)
+
+    async def update_repository(self, owner: str, repo: str, name: str = None, 
+                               description: str = None, private: bool = None) -> Dict[str, Any]:
+        """Update repository details"""
+        url = f"{self.api_url}/repos/{owner}/{repo}"
+        data = {}
+        if name is not None:
+            data['name'] = name
+        if description is not None:
+            data['description'] = description
+        if private is not None:
+            data['private'] = private
+        
+        return await self._make_request('PATCH', url, json=data)
+
+    async def fork_repository(self, owner: str, repo: str, organization: str = None) -> Dict[str, Any]:
+        """Fork a repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/forks"
+        data = {}
+        if organization:
+            data['organization'] = organization
+        
+        return await self._make_request('POST', url, json=data)
+
+    async def update_repository_topics(self, owner: str, repo: str, topics: List[str]) -> Dict[str, Any]:
+        """Update repository topics"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/topics"
+        data = {'names': topics}
+        headers = {**self.headers, 'Accept': 'application/vnd.github.mercy-preview+json'}
+        return await self._make_request('PUT', url, json=data, headers=headers)
+
+    async def get_repository_topics(self, owner: str, repo: str) -> List[str]:
+        """Get repository topics"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/topics"
+        headers = {**self.headers, 'Accept': 'application/vnd.github.mercy-preview+json'}
+        response = await self._make_request('GET', url, headers=headers)
+        return response.get('names', [])  # Return just the topic names list
     
     # =============================================================================
     # ISSUE OPERATIONS
@@ -163,6 +200,41 @@ class GitHubAPIClient:
         url = f"{self.api_url}/repos/{owner}/{repo}/issues/comments/{comment_id}"
         data = {'body': body}
         return await self._make_request('PATCH', url, json=data)
+
+    async def delete_issue_comment(self, owner: str, repo: str, comment_id: int) -> bool:
+        """Delete an issue comment"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/issues/comments/{comment_id}"
+        try:
+            await self._make_request('DELETE', url)
+            return True
+        except Exception:
+            return False
+
+    async def list_issue_events(self, owner: str, repo: str, issue_number: int) -> List[Dict[str, Any]]:
+        """List events for an issue"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/issues/{issue_number}/events"
+        return await self._make_request('GET', url)
+
+    async def lock_issue(self, owner: str, repo: str, issue_number: int, lock_reason: str = None) -> bool:
+        """Lock an issue"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/issues/{issue_number}/lock"
+        data = {}
+        if lock_reason:
+            data['lock_reason'] = lock_reason
+        try:
+            await self._make_request('PUT', url, json=data)
+            return True
+        except Exception:
+            return False
+
+    async def unlock_issue(self, owner: str, repo: str, issue_number: int) -> bool:
+        """Unlock an issue"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/issues/{issue_number}/lock"
+        try:
+            await self._make_request('DELETE', url)
+            return True
+        except Exception:
+            return False
     
     # =============================================================================
     # LABELS
@@ -188,6 +260,43 @@ class GitHubAPIClient:
         url = f"{self.api_url}/repos/{owner}/{repo}/labels/{name}"
         try:
             await self._make_request('DELETE', url)
+            return True
+        except Exception:
+            return False
+
+    async def update_label(self, owner: str, repo: str, current_name: str, 
+                          new_name: str = None, color: str = None, description: str = None) -> Dict[str, Any]:
+        """Update a label"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/labels/{current_name}"
+        data = {}
+        if new_name is not None:
+            data['name'] = new_name  # GitHub API expects 'name' not 'new_name'
+        if color is not None:
+            data['color'] = color.lstrip('#')
+        if description is not None:
+            data['description'] = description
+            
+        return await self._make_request('PATCH', url, json=data)
+
+    async def add_labels_to_issue(self, owner: str, repo: str, issue_number: int, 
+                                 labels: List[str]) -> List[Dict[str, Any]]:
+        """Add labels to an issue"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/issues/{issue_number}/labels"
+        data = {'labels': labels}
+        return await self._make_request('POST', url, json=data)
+
+    async def remove_label_from_issue(self, owner: str, repo: str, issue_number: int, 
+                                     label_name: str) -> List[Dict[str, Any]]:
+        """Remove a label from an issue"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/issues/{issue_number}/labels/{label_name}"
+        return await self._make_request('DELETE', url)
+
+    async def remove_labels_from_issue(self, owner: str, repo: str, issue_number: int, 
+                                      labels: List[str]) -> bool:
+        """Remove multiple labels from an issue"""
+        try:
+            for label in labels:
+                await self.remove_label_from_issue(owner, repo, issue_number, label)
             return True
         except Exception:
             return False
@@ -253,6 +362,81 @@ class GitHubAPIClient:
         return await self._make_request('POST', url, json=data, headers=headers)
     
     # =============================================================================
+    # FILE OPERATIONS
+    # =============================================================================
+    
+    async def get_file_contents(self, owner: str, repo: str, path: str, ref: str = None) -> Dict[str, Any]:
+        """Get file content from repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/contents/{path}"
+        params = {}
+        if ref:
+            params["ref"] = ref
+        return await self._make_request('GET', url, params=params)
+
+    async def create_file(self, owner: str, repo: str, path: str, content: str, 
+                         message: str, branch: str = "main") -> Dict[str, Any]:
+        """Create a new file in repository"""
+        import base64
+        encoded_content = base64.b64encode(content.encode()).decode()
+        url = f"{self.api_url}/repos/{owner}/{repo}/contents/{path}"
+        data = {
+            "message": message,
+            "content": encoded_content,
+            "branch": branch
+        }
+        return await self._make_request('PUT', url, json=data)
+
+    async def update_file(self, owner: str, repo: str, path: str, content: str, 
+                         message: str, sha: str, branch: str = "main") -> Dict[str, Any]:
+        """Update an existing file in repository"""
+        import base64
+        encoded_content = base64.b64encode(content.encode()).decode()
+        url = f"{self.api_url}/repos/{owner}/{repo}/contents/{path}"
+        data = {
+            "message": message,
+            "content": encoded_content,
+            "sha": sha,
+            "branch": branch
+        }
+        return await self._make_request('PUT', url, json=data)
+
+    async def delete_file(self, owner: str, repo: str, path: str, message: str, 
+                         sha: str, branch: str = "main") -> Dict[str, Any]:
+        """Delete a file from repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/contents/{path}"
+        data = {
+            "message": message,
+            "sha": sha,
+            "branch": branch
+        }
+        return await self._make_request('DELETE', url, json=data)
+
+    async def create_or_update_file(self, owner: str, repo: str, path: str, message: str, 
+                                   content: str, sha: str = None, branch: str = "main") -> Dict[str, Any]:
+        """Create or update a file in repository"""
+        import base64
+        encoded_content = base64.b64encode(content.encode()).decode()
+        url = f"{self.api_url}/repos/{owner}/{repo}/contents/{path}"
+        data = {
+            "message": message,
+            "content": encoded_content,
+            "branch": branch
+        }
+        if sha:  # Update existing file
+            data["sha"] = sha
+        
+        return await self._make_request('PUT', url, json=data)
+
+    async def list_directory_contents(self, owner: str, repo: str, path: str = "", 
+                                     ref: str = None) -> List[Dict[str, Any]]:
+        """List contents of a directory"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/contents/{path}"
+        params = {}
+        if ref:
+            params["ref"] = ref
+        return await self._make_request('GET', url, params=params)
+
+    # =============================================================================
     # PULL REQUESTS
     # =============================================================================
     
@@ -279,6 +463,33 @@ class GitHubAPIClient:
         """Get a specific pull request"""
         url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}"
         return await self._make_request('GET', url)
+
+    async def merge_pull_request(self, owner: str, repo: str, pull_number: int, 
+                               commit_title: str = None, commit_message: str = None,
+                               merge_method: str = "merge") -> Dict[str, Any]:
+        """Merge a pull request"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/merge"
+        data = {"merge_method": merge_method}
+        if commit_title:
+            data["commit_title"] = commit_title
+        if commit_message:
+            data["commit_message"] = commit_message
+            
+        return await self._make_request('PUT', url, json=data)
+
+    async def update_pull_request(self, owner: str, repo: str, pull_number: int, 
+                                 title: str = None, body: str = None, state: str = None) -> Dict[str, Any]:
+        """Update a pull request"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}"
+        data = {}
+        if title is not None:
+            data['title'] = title
+        if body is not None:
+            data['body'] = body
+        if state is not None:
+            data['state'] = state
+            
+        return await self._make_request('PATCH', url, json=data)
     
     # =============================================================================
     # BRANCHES
@@ -523,5 +734,6 @@ class GitHubAPIClient:
             return False
 
 
-# Global GitHub client instance
-github_client = GitHubAPIClient()
+def create_github_client(token: str) -> GitHubAPIClient:
+    """Factory function to create GitHub client instance"""
+    return GitHubAPIClient(token)

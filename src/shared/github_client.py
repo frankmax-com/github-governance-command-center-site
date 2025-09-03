@@ -90,6 +90,22 @@ class GitHubAPIClient:
         
         return await self._make_request('POST', url, json=data)
 
+    async def delete_repository(self, owner: str, repo: str) -> None:
+        """Delete a repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}"
+        await self._make_request('DELETE', url)
+
+    async def list_repository_forks(self, owner: str, repo: str, sort: str = "newest") -> List[Dict[str, Any]]:
+        """List repository forks"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/forks"
+        params = {'sort': sort, 'per_page': 100}
+        return await self._make_request('GET', url, params=params)
+
+    async def get_repository_activity(self, owner: str, repo: str) -> List[Dict[str, Any]]:
+        """Get repository activity (events)"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/events"
+        return await self._make_request('GET', url)
+
     async def update_repository_topics(self, owner: str, repo: str, topics: List[str]) -> Dict[str, Any]:
         """Update repository topics"""
         url = f"{self.api_url}/repos/{owner}/{repo}/topics"
@@ -102,7 +118,13 @@ class GitHubAPIClient:
         url = f"{self.api_url}/repos/{owner}/{repo}/topics"
         headers = {**self.headers, 'Accept': 'application/vnd.github.mercy-preview+json'}
         response = await self._make_request('GET', url, headers=headers)
-        return response.get('names', [])  # Return just the topic names list
+        return response.get('names', [])
+
+    async def list_repository_topics(self, owner: str, repo: str) -> Dict[str, Any]:
+        """List repository topics (full response)"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/topics"
+        headers = {**self.headers, 'Accept': 'application/vnd.github.mercy-preview+json'}
+        return await self._make_request('GET', url, headers=headers)  # Return just the topic names list
     
     # =============================================================================
     # ISSUE OPERATIONS
@@ -427,6 +449,29 @@ class GitHubAPIClient:
         
         return await self._make_request('PUT', url, json=data)
 
+    async def get_file_tree(self, owner: str, repo: str, tree_sha: str = None, recursive: bool = False) -> Dict[str, Any]:
+        """Get repository file tree"""
+        if not tree_sha:
+            # Get the default branch SHA first
+            repo_info = await self.get_repository(owner, repo)
+            tree_sha = repo_info['default_branch']
+            
+        url = f"{self.api_url}/repos/{owner}/{repo}/git/trees/{tree_sha}"
+        params = {}
+        if recursive:
+            params['recursive'] = '1'
+        return await self._make_request('GET', url, params=params)
+
+    async def search_code(self, query: str, sort: str = None, order: str = "desc") -> Dict[str, Any]:
+        """Search for code in repositories"""
+        url = f"{self.api_url}/search/code"
+        params = {'q': query}
+        if sort:
+            params['sort'] = sort
+        if order:
+            params['order'] = order
+        return await self._make_request('GET', url, params=params)
+
     async def list_directory_contents(self, owner: str, repo: str, path: str = "", 
                                      ref: str = None) -> List[Dict[str, Any]]:
         """List contents of a directory"""
@@ -490,6 +535,34 @@ class GitHubAPIClient:
             data['state'] = state
             
         return await self._make_request('PATCH', url, json=data)
+
+    async def close_pull_request(self, owner: str, repo: str, pull_number: int) -> Dict[str, Any]:
+        """Close a pull request"""
+        return await self.update_pull_request(owner, repo, pull_number, state='closed')
+
+    async def list_pull_request_files(self, owner: str, repo: str, pull_number: int) -> List[Dict[str, Any]]:
+        """List files changed in a pull request"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/files"
+        return await self._make_request('GET', url)
+
+    async def list_pull_request_commits(self, owner: str, repo: str, pull_number: int) -> List[Dict[str, Any]]:
+        """List commits in a pull request"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/commits"
+        return await self._make_request('GET', url)
+
+    async def create_pull_request_review(self, owner: str, repo: str, pull_number: int, 
+                                        body: str = None, event: str = "COMMENT",
+                                        comments: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Create a pull request review"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/reviews"
+        data = {'event': event}
+        
+        if body:
+            data['body'] = body
+        if comments:
+            data['comments'] = comments
+            
+        return await self._make_request('POST', url, json=data)
     
     # =============================================================================
     # BRANCHES
@@ -513,6 +586,27 @@ class GitHubAPIClient:
             'sha': sha
         }
         return await self._make_request('POST', url, json=data)
+
+    async def delete_branch(self, owner: str, repo: str, branch_name: str) -> None:
+        """Delete a branch"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/git/refs/heads/{branch_name}"
+        await self._make_request('DELETE', url)
+
+    async def get_branch_protection(self, owner: str, repo: str, branch: str) -> Dict[str, Any]:
+        """Get branch protection settings"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/branches/{branch}/protection"
+        return await self._make_request('GET', url)
+
+    async def update_branch_protection(self, owner: str, repo: str, branch: str, 
+                                     protection_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Update branch protection settings"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/branches/{branch}/protection"
+        return await self._make_request('PUT', url, json=protection_data)
+
+    async def compare_branches(self, owner: str, repo: str, base: str, head: str) -> Dict[str, Any]:
+        """Compare two branches or commits"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/compare/{base}...{head}"
+        return await self._make_request('GET', url)
     
     # =============================================================================
     # WEBHOOKS

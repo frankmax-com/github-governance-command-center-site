@@ -131,6 +131,12 @@ class GitHubAPIClient:
         url = f"{self.api_url}/repos/{owner}/{repo}/languages"
         return await self._make_request('GET', url)
 
+    async def archive_repository(self, owner: str, repo: str) -> Dict[str, Any]:
+        """Archive a repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}"
+        data = {'archived': True}
+        return await self._make_request('PATCH', url, json=data)
+    
     async def get_repository_stats(self, owner: str, repo: str) -> Dict[str, Any]:
         """Get repository statistics including contributor activity"""
         url = f"{self.api_url}/repos/{owner}/{repo}/stats/contributors"
@@ -263,6 +269,23 @@ class GitHubAPIClient:
         """List events for an issue"""
         url = f"{self.api_url}/repos/{owner}/{repo}/issues/{issue_number}/events"
         return await self._make_request('GET', url)
+
+    async def list_collaborators(self, owner: str, repo: str) -> List[Dict[str, Any]]:
+        """List repository collaborators"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/collaborators"
+        return await self._make_request('GET', url)
+
+    async def add_collaborator(self, owner: str, repo: str, username: str, permission: str = "push") -> Dict[str, Any]:
+        """Add a collaborator to a repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/collaborators/{username}"
+        data = {'permission': permission}
+        return await self._make_request('PUT', url, json=data)
+
+    async def remove_collaborator(self, owner: str, repo: str, username: str) -> bool:
+        """Remove a collaborator from a repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/collaborators/{username}"
+        await self._make_request('DELETE', url)
+        return True
 
     async def lock_issue(self, owner: str, repo: str, issue_number: int, lock_reason: str = None) -> bool:
         """Lock an issue"""
@@ -499,6 +522,29 @@ class GitHubAPIClient:
             params['order'] = order
         return await self._make_request('GET', url, params=params)
 
+    async def get_blob(self, owner: str, repo: str, sha: str) -> Dict[str, Any]:
+        """Get raw file content by SHA (blob)"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/git/blobs/{sha}"
+        return await self._make_request('GET', url)
+
+    async def create_blob(self, owner: str, repo: str, content: str, encoding: str = "utf-8") -> Dict[str, Any]:
+        """Create a blob from file content"""
+        import base64
+        
+        # Encode content based on specified encoding
+        if encoding == "base64":
+            encoded_content = content  # Assume content is already base64
+        else:
+            # Convert to base64
+            encoded_content = base64.b64encode(content.encode(encoding)).decode()
+        
+        url = f"{self.api_url}/repos/{owner}/{repo}/git/blobs"
+        data = {
+            "content": encoded_content,
+            "encoding": "base64"
+        }
+        return await self._make_request('POST', url, json=data)
+
     async def list_directory_contents(self, owner: str, repo: str, path: str = "", 
                                      ref: str = None) -> List[Dict[str, Any]]:
         """List contents of a directory"""
@@ -650,6 +696,17 @@ class GitHubAPIClient:
         url = f"{self.api_url}/repos/{owner}/{repo}/branches/{branch}"
         return await self._make_request('GET', url)
     
+    async def get_branch_merge_methods(self, owner: str, repo: str) -> Dict[str, Any]:
+        """Get allowed merge methods for a repository"""
+        repo_data = await self.get_repository(owner, repo)
+        return {
+            'allow_merge_commit': repo_data.get('allow_merge_commit', True),
+            'allow_squash_merge': repo_data.get('allow_squash_merge', True),
+            'allow_rebase_merge': repo_data.get('allow_rebase_merge', True),
+            'allow_auto_merge': repo_data.get('allow_auto_merge', False),
+            'delete_branch_on_merge': repo_data.get('delete_branch_on_merge', False)
+        }
+    
     async def create_branch(self, owner: str, repo: str, branch: str, sha: str) -> Dict[str, Any]:
         """Create a new branch"""
         url = f"{self.api_url}/repos/{owner}/{repo}/git/refs"
@@ -740,6 +797,28 @@ class GitHubAPIClient:
             return True
         except Exception:
             return False
+    
+    async def list_workflow_runs(self, owner: str, repo: str, workflow_id: str = None) -> List[Dict[str, Any]]:
+        """List workflow runs for a repository"""
+        if workflow_id:
+            url = f"{self.api_url}/repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"
+        else:
+            url = f"{self.api_url}/repos/{owner}/{repo}/actions/runs"
+        response = await self._make_request('GET', url)
+        return response.get('workflow_runs', [])
+
+    async def trigger_workflow(self, owner: str, repo: str, workflow_id: str, ref: str = "main", inputs: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Trigger a workflow dispatch event"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches"
+        data = {'ref': ref}
+        if inputs:
+            data['inputs'] = inputs
+        return await self._make_request('POST', url, json=data)
+
+    async def list_repository_vulnerabilities(self, owner: str, repo: str) -> List[Dict[str, Any]]:
+        """List repository vulnerabilities"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/vulnerability-alerts"
+        return await self._make_request('GET', url)
     
     # =============================================================================
     # ORGANIZATIONS

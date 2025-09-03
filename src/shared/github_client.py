@@ -125,6 +125,33 @@ class GitHubAPIClient:
         url = f"{self.api_url}/repos/{owner}/{repo}/topics"
         headers = {**self.headers, 'Accept': 'application/vnd.github.mercy-preview+json'}
         return await self._make_request('GET', url, headers=headers)  # Return just the topic names list
+
+    async def get_repository_languages(self, owner: str, repo: str) -> Dict[str, int]:
+        """Get repository programming languages with byte counts"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/languages"
+        return await self._make_request('GET', url)
+
+    async def get_repository_stats(self, owner: str, repo: str) -> Dict[str, Any]:
+        """Get repository statistics including contributor activity"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/stats/contributors"
+        stats_data = await self._make_request('GET', url)
+        
+        # Also get additional repository metrics
+        repo_data = await self.get_repository(owner, repo)
+        
+        return {
+            'contributors': stats_data,
+            'repository_metrics': {
+                'stars': repo_data.get('stargazers_count', 0),
+                'forks': repo_data.get('forks_count', 0),
+                'watchers': repo_data.get('watchers_count', 0),
+                'open_issues': repo_data.get('open_issues_count', 0),
+                'size': repo_data.get('size', 0),
+                'created_at': repo_data.get('created_at'),
+                'updated_at': repo_data.get('updated_at'),
+                'pushed_at': repo_data.get('pushed_at')
+            }
+        }
     
     # =============================================================================
     # ISSUE OPERATIONS
@@ -563,6 +590,51 @@ class GitHubAPIClient:
             data['comments'] = comments
             
         return await self._make_request('POST', url, json=data)
+
+    async def list_pull_request_reviews(self, owner: str, repo: str, pull_number: int) -> List[Dict[str, Any]]:
+        """List reviews for a pull request"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/reviews"
+        return await self._make_request('GET', url)
+
+    async def get_pull_request_review(self, owner: str, repo: str, pull_number: int, review_id: int) -> Dict[str, Any]:
+        """Get a specific pull request review"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+        return await self._make_request('GET', url)
+
+    async def update_pull_request_review(self, owner: str, repo: str, pull_number: int, 
+                                        review_id: int, body: str) -> Dict[str, Any]:
+        """Update a pull request review"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+        data = {'body': body}
+        return await self._make_request('PUT', url, json=data)
+
+    async def dismiss_pull_request_review(self, owner: str, repo: str, pull_number: int, 
+                                         review_id: int, message: str) -> Dict[str, Any]:
+        """Dismiss a pull request review"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals"
+        data = {'message': message}
+        return await self._make_request('PUT', url, json=data)
+
+    async def submit_pull_request_review(self, owner: str, repo: str, pull_number: int, 
+                                        review_id: int, event: str, body: str = None) -> Dict[str, Any]:
+        """Submit a pull request review"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events"
+        data = {'event': event}
+        if body:
+            data['body'] = body
+        return await self._make_request('POST', url, json=data)
+
+    async def request_pull_request_reviewers(self, owner: str, repo: str, pull_number: int,
+                                           reviewers: List[str] = None, 
+                                           team_reviewers: List[str] = None) -> Dict[str, Any]:
+        """Request reviewers for a pull request"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+        data = {}
+        if reviewers:
+            data['reviewers'] = reviewers
+        if team_reviewers:
+            data['team_reviewers'] = team_reviewers
+        return await self._make_request('POST', url, json=data)
     
     # =============================================================================
     # BRANCHES
@@ -607,6 +679,37 @@ class GitHubAPIClient:
         """Compare two branches or commits"""
         url = f"{self.api_url}/repos/{owner}/{repo}/compare/{base}...{head}"
         return await self._make_request('GET', url)
+
+    async def delete_branch_protection(self, owner: str, repo: str, branch: str) -> None:
+        """Delete branch protection settings"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/branches/{branch}/protection"
+        await self._make_request('DELETE', url)
+
+    async def protect_branch(self, owner: str, repo: str, branch: str, 
+                           required_status_checks: Dict[str, Any] = None,
+                           enforce_admins: bool = True,
+                           required_pull_request_reviews: Dict[str, Any] = None,
+                           restrictions: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Add comprehensive branch protection rules"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/branches/{branch}/protection"
+        
+        protection_data = {
+            'enforce_admins': enforce_admins,
+            'required_status_checks': required_status_checks or {
+                'strict': True,
+                'contexts': []
+            },
+            'required_pull_request_reviews': required_pull_request_reviews or {
+                'required_approving_review_count': 1,
+                'dismiss_stale_reviews': True,
+                'require_code_owner_reviews': False
+            }
+        }
+        
+        if restrictions:
+            protection_data['restrictions'] = restrictions
+            
+        return await self._make_request('PUT', url, json=protection_data)
     
     # =============================================================================
     # WEBHOOKS

@@ -1,0 +1,70 @@
+# Docker Compose for GitHub Governance Factory Swagger Documentation
+# Complete API documentation and testing environment
+
+version: '3.8'
+
+services:
+  # Swagger API Documentation Service
+  swagger-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.swagger
+    container_name: github-governance-swagger
+    environment:
+      - ENVIRONMENT=docker-demo
+      - LOG_LEVEL=INFO
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-demo_token_please_set_your_own}
+    ports:
+      - "8000:8000"
+    networks:
+      - swagger-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./src:/app/src:ro  # Mount source code for development
+    restart: unless-stopped
+
+  # Optional: Swagger UI standalone (alternative view)
+  swagger-ui:
+    image: swaggerapi/swagger-ui:latest
+    container_name: github-governance-swagger-ui
+    environment:
+      - SWAGGER_JSON_URL=http://localhost:8000/openapi.json
+      - API_URL=http://localhost:8000/openapi.json
+    ports:
+      - "8080:8080"
+    networks:
+      - swagger-network
+    depends_on:
+      swagger-api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Optional: ReDoc alternative documentation
+  redoc:
+    image: redocly/redoc:latest
+    container_name: github-governance-redoc
+    environment:
+      - SPEC_URL=http://localhost:8000/openapi.json
+    ports:
+      - "8081:80"
+    networks:
+      - swagger-network
+    depends_on:
+      swagger-api:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  swagger-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16
+
+volumes:
+  swagger-data:
+    driver: local

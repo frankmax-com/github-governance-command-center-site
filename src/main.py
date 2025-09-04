@@ -12,17 +12,27 @@ from pathlib import Path
 src_path = Path(__file__).parent
 sys.path.insert(0, str(src_path))
 
-# For production deployment, use the health check app
+# For production deployment, use the comprehensive API with Swagger documentation
 try:
-    from health import app
+    from api import app
+    logger = logging.getLogger(__name__)
+    logger.info("✅ Loaded comprehensive API with Swagger documentation")
+    logger.info("📚 API Documentation available at: /docs")
+    logger.info("📊 Interactive API at: /redoc")
 except ImportError:
-    # Fallback for development/testing
-    from fastapi import FastAPI
-    app = FastAPI(title="GitHub Governance Factory", version="1.0.0")
-    
-    @app.get("/health")
-    async def health():
-        return {"status": "ok", "message": "Health endpoint available"}
+    # Fallback to health check app
+    try:
+        from health import app
+        logger = logging.getLogger(__name__)
+        logger.info("⚠️ Loaded basic health check app (fallback)")
+    except ImportError:
+        # Ultimate fallback
+        from fastapi import FastAPI
+        app = FastAPI(title="GitHub Governance Factory", version="2.0.0")
+        
+        @app.get("/health")
+        async def health():
+            return {"status": "ok", "message": "Basic health endpoint available"}
 
 # Configure production logging
 logging.basicConfig(

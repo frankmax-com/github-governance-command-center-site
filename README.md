@@ -101,11 +101,32 @@ REDIS_URL=redis://localhost:6379
 ```
 
 ### Start Services
+
+#### 🐳 **Docker Swagger Documentation (Recommended)**
+```powershell
+# PowerShell (Windows)
+.\start-swagger-docker.ps1
+
+# Linux/Mac
+./start-swagger-docker.sh
+
+# Manual Docker Compose
+docker-compose -f docker-compose.swagger.yml up --build -d
+```
+
+**Access Points:**
+- **Main API Documentation**: http://localhost:8000/docs
+- **Alternative Documentation**: http://localhost:8000/redoc  
+- **Standalone Swagger UI**: http://localhost:8080
+- **Standalone ReDoc**: http://localhost:8081
+- **Health Check**: http://localhost:8000/health
+
+#### 🔧 **Traditional Service Deployment**
 ```bash
-# Option 1: CLI (Recommended)
+# Option 1: CLI (Development)
 python cli.py serve --service all
 
-# Option 2: Docker Compose
+# Option 2: Production Docker Compose
 docker-compose up -d
 
 # Option 3: Individual Services

@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-09-05T07:46:09.570544",
+  "total_functions_tested": 29,
+  "categories": {
+    "copilot_enterprise": {
+      "functions": 5,
+      "tested": 0,
+      "passed": 0,
+      "details": []
+    },
+    "security_extensions": {
+      "functions": 8,
+      "tested": 0,
+      "passed": 0,
+      "details": []
+    },
+    "repository_rules": {
+      "functions": 8,
+      "tested": 0,
+      "passed": 0,
+      "details": []
+    },
+    "packages_enterprise": {
+      "functions": 6,
+      "tested": 0,
+      "passed": 0,
+      "details": []
+    },
+    "environment_enhancements": {
+      "functions": 4,
+      "tested": 0,
+      "passed": 0,
+      "details": []
+    },
+    "team_discussions": {
+      "functions": 8,
+      "tested": 0,
+      "passed": 0,
+      "details": []
+    }
+  },
+  "summary": {},
+  "business_impact": {},
+  "error": "Failed to connect to GitHub API"
+}

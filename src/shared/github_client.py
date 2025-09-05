@@ -968,6 +968,371 @@ class GitHubAPIClient:
         return setup_results
     
     # =============================================================================
+    # GITHUB COPILOT ENTERPRISE API
+    # =============================================================================
+    
+    async def get_copilot_seat_management(self, org: str) -> Dict[str, Any]:
+        """Get GitHub Copilot seat management for organization"""
+        url = f"{self.api_url}/orgs/{org}/copilot/seats"
+        return await self._make_request('GET', url)
+    
+    async def add_copilot_seats(self, org: str, selected_usernames: List[str]) -> Dict[str, Any]:
+        """Add GitHub Copilot seats for specified users"""
+        url = f"{self.api_url}/orgs/{org}/copilot/seats"
+        data = {'selected_usernames': selected_usernames}
+        return await self._make_request('POST', url, json=data)
+    
+    async def remove_copilot_seats(self, org: str, selected_usernames: List[str]) -> Dict[str, Any]:
+        """Remove GitHub Copilot seats for specified users"""
+        url = f"{self.api_url}/orgs/{org}/copilot/seats"
+        data = {'selected_usernames': selected_usernames}
+        return await self._make_request('DELETE', url, json=data)
+    
+    async def get_copilot_usage(self, org: str, since: Optional[str] = None, until: Optional[str] = None) -> Dict[str, Any]:
+        """Get GitHub Copilot usage metrics for organization"""
+        url = f"{self.api_url}/orgs/{org}/copilot/usage"
+        params = {}
+        if since:
+            params['since'] = since
+        if until:
+            params['until'] = until
+        return await self._make_request('GET', url, params=params)
+    
+    async def get_copilot_metrics(self, org: str, since: Optional[str] = None, until: Optional[str] = None) -> Dict[str, Any]:
+        """Get GitHub Copilot metrics and analytics for organization"""
+        url = f"{self.api_url}/orgs/{org}/copilot/metrics"
+        params = {}
+        if since:
+            params['since'] = since
+        if until:
+            params['until'] = until
+        return await self._make_request('GET', url, params=params)
+    
+    # =============================================================================
+    # ADVANCED SECURITY API EXTENSIONS
+    # =============================================================================
+    
+    async def get_secret_scanning_locations(self, owner: str, repo: str, alert_number: int) -> Dict[str, Any]:
+        """Get locations of a secret scanning alert"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations"
+        return await self._make_request('GET', url)
+    
+    async def update_secret_scanning_alert(self, owner: str, repo: str, alert_number: int, 
+                                         state: str, resolution: Optional[str] = None) -> Dict[str, Any]:
+        """Update a secret scanning alert"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"
+        data = {'state': state}
+        if resolution:
+            data['resolution'] = resolution
+        return await self._make_request('PATCH', url, json=data)
+    
+    async def list_dependabot_alerts(self, owner: str, repo: str, state: Optional[str] = None,
+                                   severity: Optional[str] = None, ecosystem: Optional[str] = None,
+                                   package: Optional[str] = None, scope: Optional[str] = None) -> List[Dict[str, Any]]:
+        """List Dependabot alerts for a repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/dependabot/alerts"
+        params = {'per_page': 100}
+        if state:
+            params['state'] = state
+        if severity:
+            params['severity'] = severity
+        if ecosystem:
+            params['ecosystem'] = ecosystem
+        if package:
+            params['package'] = package
+        if scope:
+            params['scope'] = scope
+        return await self._make_request('GET', url, params=params)
+    
+    async def get_dependabot_alert(self, owner: str, repo: str, alert_number: int) -> Dict[str, Any]:
+        """Get a specific Dependabot alert"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/dependabot/alerts/{alert_number}"
+        return await self._make_request('GET', url)
+    
+    async def update_dependabot_alert(self, owner: str, repo: str, alert_number: int,
+                                    state: str, dismissed_reason: Optional[str] = None,
+                                    dismissed_comment: Optional[str] = None) -> Dict[str, Any]:
+        """Update a Dependabot alert"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/dependabot/alerts/{alert_number}"
+        data = {'state': state}
+        if dismissed_reason:
+            data['dismissed_reason'] = dismissed_reason
+        if dismissed_comment:
+            data['dismissed_comment'] = dismissed_comment
+        return await self._make_request('PATCH', url, json=data)
+    
+    async def get_code_scanning_sarif(self, owner: str, repo: str, sarif_id: str) -> Dict[str, Any]:
+        """Get information about a SARIF upload"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"
+        return await self._make_request('GET', url)
+    
+    async def list_code_scanning_analyses(self, owner: str, repo: str, tool_name: Optional[str] = None,
+                                        tool_guid: Optional[str] = None, ref: Optional[str] = None) -> List[Dict[str, Any]]:
+        """List code scanning analyses for a repository"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/code-scanning/analyses"
+        params = {'per_page': 100}
+        if tool_name:
+            params['tool_name'] = tool_name
+        if tool_guid:
+            params['tool_guid'] = tool_guid
+        if ref:
+            params['ref'] = ref
+        return await self._make_request('GET', url, params=params)
+    
+    async def get_code_scanning_analysis(self, owner: str, repo: str, analysis_id: int) -> Dict[str, Any]:
+        """Get a specific code scanning analysis"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"
+        return await self._make_request('GET', url)
+    
+    # =============================================================================
+    # REPOSITORY RULES API (BETA)
+    # =============================================================================
+    
+    async def get_repo_rules(self, owner: str, repo: str, includes_parents: bool = True) -> List[Dict[str, Any]]:
+        """Get repository rules"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/rules"
+        params = {'includes_parents': includes_parents}
+        headers = {**self.headers, 'Accept': 'application/vnd.github+json'}
+        return await self._make_request('GET', url, params=params, headers=headers)
+    
+    async def create_repo_rule(self, owner: str, repo: str, name: str, target: str,
+                             enforcement: str, conditions: Dict[str, Any] = None,
+                             rules: List[Dict[str, Any]] = None, bypass_actors: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Create a repository rule"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/rules"
+        data = {
+            'name': name,
+            'target': target,
+            'enforcement': enforcement
+        }
+        if conditions:
+            data['conditions'] = conditions
+        if rules:
+            data['rules'] = rules
+        if bypass_actors:
+            data['bypass_actors'] = bypass_actors
+        
+        headers = {**self.headers, 'Accept': 'application/vnd.github+json'}
+        return await self._make_request('POST', url, json=data, headers=headers)
+    
+    async def get_repo_rule(self, owner: str, repo: str, rule_id: int) -> Dict[str, Any]:
+        """Get a specific repository rule"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/rules/{rule_id}"
+        headers = {**self.headers, 'Accept': 'application/vnd.github+json'}
+        return await self._make_request('GET', url, headers=headers)
+    
+    async def update_repo_rule(self, owner: str, repo: str, rule_id: int, name: str = None,
+                             target: str = None, enforcement: str = None,
+                             conditions: Dict[str, Any] = None, rules: List[Dict[str, Any]] = None,
+                             bypass_actors: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Update a repository rule"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/rules/{rule_id}"
+        data = {}
+        if name:
+            data['name'] = name
+        if target:
+            data['target'] = target
+        if enforcement:
+            data['enforcement'] = enforcement
+        if conditions:
+            data['conditions'] = conditions
+        if rules:
+            data['rules'] = rules
+        if bypass_actors:
+            data['bypass_actors'] = bypass_actors
+        
+        headers = {**self.headers, 'Accept': 'application/vnd.github+json'}
+        return await self._make_request('PUT', url, json=data, headers=headers)
+    
+    async def delete_repo_rule(self, owner: str, repo: str, rule_id: int) -> None:
+        """Delete a repository rule"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/rules/{rule_id}"
+        headers = {**self.headers, 'Accept': 'application/vnd.github+json'}
+        await self._make_request('DELETE', url, headers=headers)
+    
+    async def get_org_repo_rules(self, org: str, includes_parents: bool = True) -> List[Dict[str, Any]]:
+        """Get organization repository rules"""
+        url = f"{self.api_url}/orgs/{org}/rules"
+        params = {'includes_parents': includes_parents}
+        headers = {**self.headers, 'Accept': 'application/vnd.github+json'}
+        return await self._make_request('GET', url, params=params, headers=headers)
+    
+    async def create_org_repo_rule(self, org: str, name: str, target: str, enforcement: str,
+                                 conditions: Dict[str, Any] = None, rules: List[Dict[str, Any]] = None,
+                                 bypass_actors: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Create an organization repository rule"""
+        url = f"{self.api_url}/orgs/{org}/rules"
+        data = {
+            'name': name,
+            'target': target,
+            'enforcement': enforcement
+        }
+        if conditions:
+            data['conditions'] = conditions
+        if rules:
+            data['rules'] = rules
+        if bypass_actors:
+            data['bypass_actors'] = bypass_actors
+        
+        headers = {**self.headers, 'Accept': 'application/vnd.github+json'}
+        return await self._make_request('POST', url, json=data, headers=headers)
+    
+    # =============================================================================
+    # GITHUB PACKAGES ENTERPRISE API
+    # =============================================================================
+    
+    async def list_org_packages(self, org: str, package_type: str = "npm", visibility: str = "all") -> List[Dict[str, Any]]:
+        """List packages for an organization"""
+        url = f"{self.api_url}/orgs/{org}/packages"
+        params = {
+            'package_type': package_type,
+            'visibility': visibility,
+            'per_page': 100
+        }
+        return await self._make_request('GET', url, params=params)
+    
+    async def get_org_package(self, org: str, package_type: str, package_name: str) -> Dict[str, Any]:
+        """Get a specific package for an organization"""
+        url = f"{self.api_url}/orgs/{org}/packages/{package_type}/{package_name}"
+        return await self._make_request('GET', url)
+    
+    async def delete_org_package(self, org: str, package_type: str, package_name: str) -> None:
+        """Delete a package for an organization"""
+        url = f"{self.api_url}/orgs/{org}/packages/{package_type}/{package_name}"
+        await self._make_request('DELETE', url)
+    
+    async def restore_org_package(self, org: str, package_type: str, package_name: str) -> None:
+        """Restore a deleted package for an organization"""
+        url = f"{self.api_url}/orgs/{org}/packages/{package_type}/{package_name}/restore"
+        await self._make_request('POST', url)
+    
+    async def get_org_package_version(self, org: str, package_type: str, package_name: str, 
+                                    package_version_id: int) -> Dict[str, Any]:
+        """Get a specific package version for an organization"""
+        url = f"{self.api_url}/orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
+        return await self._make_request('GET', url)
+    
+    async def delete_org_package_version(self, org: str, package_type: str, package_name: str, 
+                                       package_version_id: int) -> None:
+        """Delete a package version for an organization"""
+        url = f"{self.api_url}/orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
+        await self._make_request('DELETE', url)
+    
+    async def restore_org_package_version(self, org: str, package_type: str, package_name: str, 
+                                        package_version_id: int) -> None:
+        """Restore a deleted package version for an organization"""
+        url = f"{self.api_url}/orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
+        await self._make_request('POST', url)
+    
+    # =============================================================================
+    # ENVIRONMENTS API ENHANCEMENTS
+    # =============================================================================
+    
+    async def get_environment_deployment_protection_rules(self, owner: str, repo: str, environment_name: str) -> List[Dict[str, Any]]:
+        """Get deployment protection rules for an environment"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
+        return await self._make_request('GET', url)
+    
+    async def create_deployment_protection_rule(self, owner: str, repo: str, environment_name: str,
+                                              integration_id: int, enabled: bool = True) -> Dict[str, Any]:
+        """Create a deployment protection rule for an environment"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
+        data = {
+            'integration_id': integration_id,
+            'enabled': enabled
+        }
+        return await self._make_request('POST', url, json=data)
+    
+    async def get_custom_deployment_protection_rule(self, owner: str, repo: str, environment_name: str, 
+                                                   protection_rule_id: int) -> Dict[str, Any]:
+        """Get a custom deployment protection rule"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"
+        return await self._make_request('GET', url)
+    
+    async def enable_or_disable_deployment_protection_rule(self, owner: str, repo: str, environment_name: str,
+                                                         protection_rule_id: int, enabled: bool) -> Dict[str, Any]:
+        """Enable or disable a deployment protection rule"""
+        url = f"{self.api_url}/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"
+        data = {'enabled': enabled}
+        return await self._make_request('PATCH', url, json=data)
+    
+    # =============================================================================
+    # TEAM DISCUSSIONS API (BETA)
+    # =============================================================================
+    
+    async def list_team_discussions(self, org: str, team_slug: str, pinned: Optional[bool] = None) -> List[Dict[str, Any]]:
+        """List team discussions"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions"
+        params = {'per_page': 100}
+        if pinned is not None:
+            params['pinned'] = pinned
+        return await self._make_request('GET', url, params=params)
+    
+    async def create_team_discussion(self, org: str, team_slug: str, title: str, body: str, 
+                                   private: bool = False) -> Dict[str, Any]:
+        """Create a team discussion"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions"
+        data = {
+            'title': title,
+            'body': body,
+            'private': private
+        }
+        return await self._make_request('POST', url, json=data)
+    
+    async def get_team_discussion(self, org: str, team_slug: str, discussion_number: int) -> Dict[str, Any]:
+        """Get a team discussion"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+        return await self._make_request('GET', url)
+    
+    async def update_team_discussion(self, org: str, team_slug: str, discussion_number: int,
+                                   title: str = None, body: str = None) -> Dict[str, Any]:
+        """Update a team discussion"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+        data = {}
+        if title:
+            data['title'] = title
+        if body:
+            data['body'] = body
+        return await self._make_request('PATCH', url, json=data)
+    
+    async def delete_team_discussion(self, org: str, team_slug: str, discussion_number: int) -> None:
+        """Delete a team discussion"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+        await self._make_request('DELETE', url)
+    
+    async def list_team_discussion_comments(self, org: str, team_slug: str, discussion_number: int) -> List[Dict[str, Any]]:
+        """List comments on a team discussion"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
+        params = {'per_page': 100}
+        return await self._make_request('GET', url, params=params)
+    
+    async def create_team_discussion_comment(self, org: str, team_slug: str, discussion_number: int, 
+                                           body: str) -> Dict[str, Any]:
+        """Create a comment on a team discussion"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
+        data = {'body': body}
+        return await self._make_request('POST', url, json=data)
+    
+    async def get_team_discussion_comment(self, org: str, team_slug: str, discussion_number: int, 
+                                        comment_number: int) -> Dict[str, Any]:
+        """Get a team discussion comment"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+        return await self._make_request('GET', url)
+    
+    async def update_team_discussion_comment(self, org: str, team_slug: str, discussion_number: int,
+                                           comment_number: int, body: str) -> Dict[str, Any]:
+        """Update a team discussion comment"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+        data = {'body': body}
+        return await self._make_request('PATCH', url, json=data)
+    
+    async def delete_team_discussion_comment(self, org: str, team_slug: str, discussion_number: int, 
+                                           comment_number: int) -> None:
+        """Delete a team discussion comment"""
+        url = f"{self.api_url}/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+        await self._make_request('DELETE', url)
+    
+    # =============================================================================
     # HELPER METHODS
     # =============================================================================
     

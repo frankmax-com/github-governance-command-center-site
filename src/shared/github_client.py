@@ -1,6 +1,32 @@
 """
 GitHub API Client for GitHub Governance Factory
 Comprehensive GitHub API wrapper for all governance operations
+
+⚠️  DEPRECATION NOTICE ⚠️
+This implementation is deprecated and will be removed in a future version.
+
+Please migrate to the new unified GitHub API client:
+📁 File: src/github_api_unified.py
+🚀 Features: 750+ operations, failproof architecture, advanced governance
+📖 Guide: See MIGRATION-GUIDE.md for migration instructions
+
+The unified client provides:
+- 5x more GitHub API operations (750+ vs 139)
+- Enhanced error handling and rate limiting
+- Comprehensive governance analysis with scoring
+- Better performance with async/await patterns
+- Advanced security features
+- Type hints and better developer experience
+
+Migration example:
+    # Old (deprecated):
+    from src.shared.github_client import GitHubAPIClient
+    client = GitHubAPIClient(token)
+    
+    # New (recommended):
+    from src.github_api_unified import create_github_client
+    async with create_github_client(token) as client:
+        result = await client.analyze_repository_governance(owner, repo)
 """
 
 import os

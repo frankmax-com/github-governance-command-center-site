@@ -1,5 +1,5 @@
 baseURL = "https://frankmax-com.github.io/github-governance-command-center-site"
-title = "GitHub Governance Command Center"
+title = "🚨 GitHub Governance Command Center - EMERGENCY DEFENSE SYSTEM"
 theme = "frankmax"
 
 # Language settings
@@ -10,50 +10,54 @@ defaultContentLanguage = "en-xx"
     languageName = "English"
     weight = 1
     contentDir = "content/en-xx"
-  title = "GitHub Governance Command Center"
+    title = "🚨 GitHub Governance Command Center - EMERGENCY DEFENSE"
 
   [languages.zh-sg]
     languageName = "中文"
     weight = 2
     contentDir = "content/zh-sg"
-  title = "GitHub治理指挥中心"
+    title = "🚨 GitHub治理指挥中心 - 紧急防御系统"
 
-# Main navigation
+# Crisis-focused menu items
 [menu]
   [[menu.main]]
-  name = "Solutions"
+    name = "🚨 CRISIS ALERT"
     url = "/"
     weight = 10
   [[menu.main]]
-  name = "Governance"
-  url = "/solutions"
+    name = "ACTIVE THREATS"
+    url = "/threat-landscape"
     weight = 20
   [[menu.main]]
-  name = "Risks"
-  url = "/risk-register"
-    weight = 25
-  [[menu.main]]
-  name = "Catalogue"
-  url = "/master-threat-catalogue"
-    weight = 28
-  [[menu.main]]
-  name = "Docs"
-  url = "/sitemap"
+    name = "EXTINCTION ZONES"
+    url = "/industries"
     weight = 30
   [[menu.main]]
-  name = "Contact"
-  url = "/crisis-hotline"
+    name = "FORTRESS SOLUTIONS"
+    url = "/solutions"
     weight = 40
+  [[menu.main]]
+    name = "SURVIVAL CALCULATOR"
+    url = "/roi-calculator"
+    weight = 50
+  [[menu.main]]
+    name = "ABOUT FORTRESS"
+    url = "/about"
+    weight = 55
+  [[menu.main]]
+    name = "📞 CRISIS HOTLINE"
+    url = "/crisis-hotline"
+    weight = 60
 
 # Site parameters
 [params]
-  description = "Professional GitHub governance — secure, compliant, predictable. Consolidate policy, automate approvals, and scale secure development across your org."
+  description = "CRITICAL ALERT: Your GitHub is Under Attack - 45+ Fatal Vulnerabilities Detected. The ONLY fail-proof defense against catastrophic enterprise extinction."
   logo = "images/logo.png"
   favicon = "images/favicon.png"
-  email = "contact@frankmax.digital"
+  email = "crisis@frankmax.digital"
   whatsapp = "+6583157449"
-  location = "Global"
-  copyright = "© 2024 Frankmax GitHub Governance Command Center. All rights reserved."
+  location = "Global Crisis Response Center"
+  copyright = "© 2024 Frankmax GitHub Governance Command Center. All rights reserved. Your ONLY defense against GitHub's 45+ fatal attack vectors."
 
 [params.governance_command_center]
   brand_name = "GitHub Governance Command Center"

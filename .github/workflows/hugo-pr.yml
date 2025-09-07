@@ -1,0 +1,46 @@
+name: PR - Hugo build validation
+
+on:
+  pull_request:
+    branches: [ develop, main, master ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "pr-validate"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build with Hugo
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_ENV: production
+        run: |
+          hugo \
+            --gc \
+            --minify
+
+      - name: Upload built site (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-site
+          path: public
+          if-no-files-found: error

@@ -1,4 +1,4 @@
-# GitHub Governance Factory - .gitignore
+# GitHub Governance Factory Website - .gitignore
 
 # Hugo build output
 public/
@@ -6,6 +6,24 @@ resources/
 
 # Hugo cache
 .hugo_build.lock
+
+# Python files (not needed for Hugo website)
+*.py
+__pycache__/
+*.pyc
+src/
+tests/
+scripts/
+
+# Docker files (not needed for static website)
+Dockerfile*
+docker-compose*.yml
+.env*
+
+# Backend application files
+requirements*.txt
+cli.py
+*.sh
 
 # Python
 __pycache__/

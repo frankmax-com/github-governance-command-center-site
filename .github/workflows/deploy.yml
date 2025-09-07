@@ -43,7 +43,7 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+            --baseURL "${{ steps.pages.outputs.base_url }}"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -51,9 +51,8 @@ jobs:
           path: ./public
 
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # Only deploy on direct pushes, not pull requests
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs: build
     steps:

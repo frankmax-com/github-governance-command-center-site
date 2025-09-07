@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://frankmax-com.github.io/github-governance-command-center-site/sitemap.xml

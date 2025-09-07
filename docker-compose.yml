@@ -1,0 +1,414 @@
+version: '3.8'
+
+services:
+  # Database Services
+  mongodb:
+    image: mongo:7.0
+    container_name: governance-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-governance-admin-pass}
+      MONGO_INITDB_DATABASE: governance
+    volumes:
+      - mongodb_data:/data/db
+      - ./init-scripts/mongodb:/docker-entrypoint-initdb.d
+    ports:
+      - "27017:27017"
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  supabase:
+    image: supabase/postgres:15.1.0.117
+    container_name: governance-supabase
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: governance
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${SUPABASE_PASSWORD:-governance-postgres-pass}
+      POSTGRES_HOST_AUTH_METHOD: md5
+    volumes:
+      - supabase_data:/var/lib/postgresql/data
+      - ./init-scripts/supabase:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d governance"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: governance-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-governance-redis-pass}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Core Microservices
+  governance-engine:
+    build:
+      context: ./services/governance-engine
+      dockerfile: Dockerfile
+    container_name: governance-engine-service
+    restart: unless-stopped
+    environment:
+      - MONGODB_URI=mongodb://admin:${MONGODB_PASSWORD:-governance-admin-pass}@mongodb:27017/governance?authSource=admin
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/0
+      - SERVICE_PORT=8001
+      - LOG_LEVEL=INFO
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    ports:
+      - "8001:8001"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  issue-management:
+    build:
+      context: ./services/issue-management
+      dockerfile: Dockerfile
+    container_name: issue-management-service
+    restart: unless-stopped
+    environment:
+      - SUPABASE_URL=postgresql://postgres:${SUPABASE_PASSWORD:-governance-postgres-pass}@supabase:5432/governance
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/1
+      - SERVICE_PORT=8002
+      - LOG_LEVEL=INFO
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    ports:
+      - "8002:8002"
+    depends_on:
+      supabase:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  project-orchestration:
+    build:
+      context: ./services/project-orchestration
+      dockerfile: Dockerfile
+    container_name: project-orchestration-service
+    restart: unless-stopped
+    environment:
+      - MONGODB_URI=mongodb://admin:${MONGODB_PASSWORD:-governance-admin-pass}@mongodb:27017/governance?authSource=admin
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/2
+      - SERVICE_PORT=8003
+      - LOG_LEVEL=INFO
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    ports:
+      - "8003:8003"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  analytics-reporting:
+    build:
+      context: ./services/analytics-reporting
+      dockerfile: Dockerfile
+    container_name: analytics-reporting-service
+    restart: unless-stopped
+    environment:
+      - SUPABASE_URL=postgresql://postgres:${SUPABASE_PASSWORD:-governance-postgres-pass}@supabase:5432/governance
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/3
+      - SERVICE_PORT=8004
+      - LOG_LEVEL=INFO
+    ports:
+      - "8004:8004"
+    depends_on:
+      supabase:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  event-processing:
+    build:
+      context: ./services/event-processing
+      dockerfile: Dockerfile
+    container_name: event-processing-service
+    restart: unless-stopped
+    environment:
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/4
+      - SERVICE_PORT=8005
+      - LOG_LEVEL=INFO
+    ports:
+      - "8005:8005"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Integration Services
+  github-api-service:
+    build:
+      context: ./services/github-api
+      dockerfile: Dockerfile
+    container_name: github-api-service
+    restart: unless-stopped
+    environment:
+      - MONGODB_URI=mongodb://admin:${MONGODB_PASSWORD:-governance-admin-pass}@mongodb:27017/governance?authSource=admin
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/5
+      - SERVICE_PORT=8006
+      - LOG_LEVEL=INFO
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_APP_ID=${GITHUB_APP_ID}
+      - GITHUB_APP_PRIVATE_KEY=${GITHUB_APP_PRIVATE_KEY}
+    ports:
+      - "8006:8006"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  webhook-handler:
+    build:
+      context: ./services/webhook-handler
+      dockerfile: Dockerfile
+    container_name: webhook-handler-service
+    restart: unless-stopped
+    environment:
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/6
+      - SERVICE_PORT=8007
+      - LOG_LEVEL=INFO
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+    ports:
+      - "8007:8007"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8007/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  agent-service-gateway:
+    build:
+      context: ./services/agent-service-gateway
+      dockerfile: Dockerfile
+    container_name: agent-service-gateway
+    restart: unless-stopped
+    environment:
+      - MONGODB_URI=mongodb://admin:${MONGODB_PASSWORD:-governance-admin-pass}@mongodb:27017/governance?authSource=admin
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/7
+      - SERVICE_PORT=8008
+      - LOG_LEVEL=INFO
+      - AI_PROVIDER_FACTORY_URL=${AI_PROVIDER_FACTORY_URL:-http://ai-provider-factory:8000}
+      - DEV_AGENT_SERVICE_URL=${DEV_AGENT_SERVICE_URL:-http://dev-agent-service:8001}
+      - QA_AGENT_SERVICE_URL=${QA_AGENT_SERVICE_URL:-http://qa-agent-service:8002}
+      - SECURITY_AGENT_SERVICE_URL=${SECURITY_AGENT_SERVICE_URL:-http://security-agent-service:8003}
+    ports:
+      - "8008:8008"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8008/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  notification-service:
+    build:
+      context: ./services/notification
+      dockerfile: Dockerfile
+    container_name: notification-service
+    restart: unless-stopped
+    environment:
+      - SUPABASE_URL=postgresql://postgres:${SUPABASE_PASSWORD:-governance-postgres-pass}@supabase:5432/governance
+      - REDIS_URI=redis://:${REDIS_PASSWORD:-governance-redis-pass}@redis:6379/8
+      - SERVICE_PORT=8009
+      - LOG_LEVEL=INFO
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - TEAMS_WEBHOOK_URL=${TEAMS_WEBHOOK_URL}
+    ports:
+      - "8009:8009"
+    depends_on:
+      supabase:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8009/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # AI Integration Services
+  ai-provider-factory:
+    image: frankmax-com/ai-provider-factory:latest
+    container_name: ai-provider-factory
+    restart: unless-stopped
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - SERVICE_PORT=8100
+      - LOG_LEVEL=INFO
+    ports:
+      - "8100:8100"
+    networks:
+      - governance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8100/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # API Gateway and Load Balancer
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: governance-api-gateway
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - governance-engine
+      - issue-management
+      - project-orchestration
+      - analytics-reporting
+      - event-processing
+      - github-api-service
+      - webhook-handler
+      - agent-service-gateway
+      - notification-service
+    networks:
+      - governance-network
+
+  # Monitoring and Observability
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: governance-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - governance-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: governance-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    networks:
+      - governance-network
+
+volumes:
+  mongodb_data:
+    driver: local
+  supabase_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  governance-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

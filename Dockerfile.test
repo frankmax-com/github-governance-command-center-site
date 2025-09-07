@@ -1,0 +1,41 @@
+# Test-specific Dockerfile for running pytest and integration tests
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies including curl for health checks
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install dependencies
+COPY requirements.test.txt .
+RUN pip install --no-cache-dir -r requirements.test.txt
+
+# Install additional test dependencies
+RUN pip install --no-cache-dir \
+    pytest==7.4.3 \
+    pytest-asyncio==0.21.1 \
+    pytest-cov==4.1.0 \
+    pytest-mock==3.12.0 \
+    httpx==0.25.2 \
+    requests==2.31.0
+
+# Copy application source
+COPY src/ src/
+COPY tests/ tests/
+COPY cli.py .
+COPY .env.example .env
+
+# Create reports directory
+RUN mkdir -p reports
+
+# Set environment variables
+ENV PYTHONPATH=/app/src
+ENV PYTHONUNBUFFERED=1
+
+# Default command (can be overridden)
+CMD ["python", "-m", "pytest", "tests/", "-v"]

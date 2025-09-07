@@ -1,9 +1,64 @@
+# GitHub Governance Factory - .gitignore
+
 # Hugo build output
 public/
 resources/
 
 # Hugo cache
 .hugo_build.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+reports/
+test-results/
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDEs and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # OS generated files
 .DS_Store
@@ -14,19 +69,57 @@ resources/
 ehthumbs.db
 Thumbs.db
 
-# Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Docker
+.docker/
 
-# Node modules (if using npm/yarn)
-node_modules/
-
-# Log files
+# Logs
+logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
 # Temporary files
+temp/
+tmp/
 *.tmp
 *.temp
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+
+# Lock files
+poetry.lock
+Pipfile.lock
+
+# Node modules
+node_modules/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Production secrets
+secrets/
+certs/
+keys/
+
+# AI/ML models
+models/
+*.pkl
+*.joblib
+
+# Documentation build
+_build/
+.doctrees/

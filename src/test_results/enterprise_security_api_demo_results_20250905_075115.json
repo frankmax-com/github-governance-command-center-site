@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-09-05T07:51:15.107960",
+  "copilot_management": {},
+  "security_scanning": {},
+  "repository_rules": {},
+  "package_management": {},
+  "environment_protection": {},
+  "team_collaboration": {},
+  "performance_metrics": {},
+  "business_value": {},
+  "error": "Failed to connect to GitHub API"
+}

@@ -1,0 +1,7 @@
+{{- $u := .Destination | safeURL -}}
+{{- $isExternal := or (strings.HasPrefix $u "http://") (strings.HasPrefix $u "https://") -}}
+{{- if $isExternal -}}
+  <img src="{{ $u }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} />
+{{- else -}}
+  <img src="{{ $u | relURL }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} />
+{{- end -}}

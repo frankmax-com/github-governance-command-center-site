@@ -1,0 +1,31 @@
+{{ define "main" }}
+<section class="fortress-root">
+  <div class="status-strip">
+    <div class="container strip-inner">
+      <span class="dot" aria-hidden="true"></span>
+      <a href="{{ "/docs" | relURL }}" class="btn btn-ghost">← Docs</a>
+      <span class="sr-only">You are reading</span>
+      <span>{{ .Title }}</span>
+    </div>
+  </div>
+
+  <header class="fortress-hero">
+    <div class="container fortress-article">
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+    </div>
+  </header>
+
+  <main class="container fortress-article" id="main-content">
+    <article class="card" style="margin: var(--space-8) 0;">
+      <div class="card-body">
+        {{ .Content }}
+      </div>
+      <div class="card-footer">
+        <a class="btn btn-ghost" href="{{ "/docs" | relURL }}">Back to Docs</a>
+        <a class="btn btn-primary" href="{{ "/contact" | relURL }}">Contact</a>
+      </div>
+    </article>
+  </main>
+</section>
+{{ end }}

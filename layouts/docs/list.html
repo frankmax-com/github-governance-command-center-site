@@ -1,0 +1,41 @@
+{{ define "main" }}
+<section class="fortress-root">
+  <div class="status-strip">
+    <div class="container strip-inner">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Documentation hub</span>
+    </div>
+  </div>
+
+  <header class="fortress-hero">
+    <div class="container fortress-article">
+      <h1>{{ .Title }}</h1>
+      {{ with .Content }}<p class="lead">{{ . }}</p>{{ end }}
+    </div>
+  </header>
+
+  <main class="container fortress-article" id="main-content">
+    {{ if .Pages }}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-6);margin:var(--space-8) 0;">
+      {{ range .Pages.ByWeight }}
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            {{ with .Params.summary }}<p class="card-summary">{{ . }}</p>{{ end }}
+          </div>
+          <a class="card-toggle" href="{{ .RelPermalink }}" aria-label="Open {{ .Title }}">Open</a>
+        </div>
+        <div class="card-footer">
+          <a class="btn btn-primary" href="{{ .RelPermalink }}">Read</a>
+          <a class="btn btn-ghost" href="{{ .RelPermalink }}#top">Details</a>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    {{ else }}
+      <p class="muted">No documentation pages found.</p>
+    {{ end }}
+  </main>
+</section>
+{{ end }}

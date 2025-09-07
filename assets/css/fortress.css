@@ -1,0 +1,195 @@
+/*
+Integration (Hugo Pipes):
+- In head (base template):
+  {{ $fortressCSS := resources.Get "css/fortress.css" | resources.Minify | resources.Fingerprint }}
+  <link rel="stylesheet" href="{{ $fortressCSS.RelPermalink }}" integrity="{{ $fortressCSS.Data.Integrity }}" crossorigin="anonymous">
+- Include partial in your template where the article content lives:
+  {{ partial "fortress-cards.html" . }}
+- JS (footer before </body>):
+  {{ $fortressJS := resources.Get "js/fortress-ui.js" | resources.Minify | resources.Fingerprint }}
+  <script defer src="{{ $fortressJS.RelPermalink }}" integrity="{{ $fortressJS.Data.Integrity }}" crossorigin="anonymous"></script>
+
+Design tokens (CSS custom properties):
+- Color
+  --color-bg, --color-surface, --color-surface-2, --color-text, --color-muted, --color-border
+  --color-primary-start, --color-primary-end, --color-danger
+- Typography
+  --font-sans, --font-size, --line-height, --font-weight, --font-weight-bold
+- Spacing (rem scale)
+  --space-2, --space-3, --space-4, --space-6, --space-8, --space-10
+- Radii
+  --radius-sm, --radius, --radius-lg
+- Elevation
+  --shadow-1, --shadow-2
+- Motion
+  --dur-fast (200ms), --dur-med (280ms), --dur-slow (360ms), --ease
+- Layout
+  --content-max (760px), --header-height (64px)
+*/
+
+:root {
+  --color-bg: #0f172a;            /* dark-slate background (light theme will override) */
+  --color-surface: #111827;
+  --color-surface-2: #0b1224;
+  --color-text: #0b1224;          /* overridden in light */
+  --color-muted: #4b5563;
+  --color-border: #e5e7eb;
+  --color-primary-start: #2563eb; /* blue-600 */
+  --color-primary-end: #1d4ed8;   /* blue-700 */
+  --color-danger: #dc2626;        /* red-600 reserved */
+
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-size: 1rem;
+  --line-height: 1.6;
+  --font-weight: 400;
+  --font-weight-bold: 700;
+
+  --space-2: .25rem;
+  --space-3: .5rem;
+  --space-4: .75rem;
+  --space-6: 1rem;
+  --space-8: 1.5rem;
+  --space-10: 2rem;
+
+  --radius-sm: .375rem;
+  --radius: .5rem;
+  --radius-lg: .75rem;
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.12), 0 8px 20px rgba(0,0,0,.10);
+
+  --dur-fast: 200ms;
+  --dur-med: 280ms;
+  --dur-slow: 360ms;
+  --ease: cubic-bezier(.2,.8,.2,1);
+
+  --content-max: 760px;
+  --header-height: 64px;
+}
+
+/* Light theme (default) */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f8fafc;      /* slate-50 */
+  --color-surface-2: #eef2f7;     /* subtle */
+  --color-text: #0f172a;          /* slate-900 */
+  --color-muted: #475569;         /* slate-600 */
+  --color-border: #e2e8f0;        /* slate-200 */
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --color-bg: #0b1224;
+  --color-surface: #0f172a;       /* slate-900 */
+  --color-surface-2: #0a1020;
+  --color-text: #e5e7eb;          /* slate-200 */
+  --color-muted: #94a3b8;         /* slate-400 */
+  --color-border: #1f2937;        /* slate-800 */
+}
+
+/* Base / typography */
+.fortress-root { /* wrapper applied to section to scope styles safely */
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+}
+.fortress-root .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-8); }
+.fortress-article { max-width: var(--content-max); margin: 0 auto; }
+
+a { color: inherit; }
+
+/* Focus styles: visible, accessible */
+.fortress-root :where(a, button, [role="button"]) {
+  outline: none;
+}
+.fortress-root :where(a, button, [role="button"]):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary-start) 60%, #ffffff);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Status strip under site header */
+.status-strip {
+  position: sticky; top: calc(var(--header-height)); z-index: 30;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: .9375rem;
+}
+.status-strip .strip-inner { display: flex; gap: var(--space-6); align-items: center; min-height: 44px; }
+.status-strip .dot { width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(90deg, var(--color-primary-start), var(--color-primary-end)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-end) 25%, transparent); }
+
+/* Hero + KPI row */
+.fortress-hero { padding: var(--space-10) 0 var(--space-6); border-bottom: 1px solid var(--color-border); }
+.fortress-hero h1 { font-size: clamp(1.5rem, 2vw + 1rem, 2rem); line-height: 1.2; margin: 0 0 var(--space-4); font-weight: var(--font-weight-bold); }
+.fortress-hero p.lead { color: var(--color-muted); margin: 0 0 var(--space-6); }
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--space-6); }
+.kpi { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-6); box-shadow: var(--shadow-1); min-height: 72px; }
+.kpi .label { color: var(--color-muted); font-size: .8125rem; }
+.kpi .value { font-weight: var(--font-weight-bold); font-size: 1.125rem; }
+
+/* Sticky compact KPI summary */
+.kpi-sticky { position: sticky; top: calc(var(--header-height) + 44px); z-index: 20; background: var(--color-bg); border-bottom: 1px solid var(--color-border); }
+.kpi-sticky .kpi-compact { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--space-6); padding: var(--space-4) 0; }
+.kpi-compact .item { color: var(--color-muted); font-size: .875rem; }
+.kpi-compact .value { color: var(--color-text); font-weight: 600; }
+
+/* Accordion / Cards */
+.fortress-accordion { display: grid; gap: var(--space-6); margin: var(--space-8) 0; }
+.card { border: 1px solid var(--color-border); background: var(--color-surface); border-radius: var(--radius); box-shadow: var(--shadow-1); overflow: clip; }
+.card-header { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--space-6); padding: var(--space-6); }
+.card-title { margin: 0 0 var(--space-2); font-size: 1rem; font-weight: 600; }
+.card-summary { color: var(--color-muted); font-size: .95rem; margin: 0; }
+.card-meta { color: var(--color-muted); font-size: .8125rem; }
+
+.card-toggle { align-self: stretch; justify-self: end; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0 var(--space-4); border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: var(--radius-sm); cursor: pointer; user-select: none; }
+.card-toggle:hover { background: var(--color-surface-2); }
+
+/* Accordion bodies are visible by default for progressive enhancement.
+   When JS is enabled, html.js-enabled will collapse them. */
+.card-body { padding: 0 var(--space-6) var(--space-6); }
+.html .card-body { padding: 0 var(--space-6) var(--space-6); }
+
+html.js-enabled .card-body { height: auto; overflow: hidden; padding-top: 0; }
+html.js-enabled .card-body.is-collapsed { height: 0; padding-top: 0; padding-bottom: 0; }
+
+.card-footer { display: flex; flex-wrap: wrap; gap: var(--space-4); padding: var(--space-6); border-top: 1px solid var(--color-border); background: linear-gradient(0deg, var(--color-surface-2), var(--color-surface)); }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: 0 var(--space-6); border-radius: var(--radius-sm); border: 1px solid transparent; cursor: pointer; text-decoration: none; font-weight: 600; font-size: .9375rem; }
+.btn-primary { color: #fff; background: linear-gradient(90deg, var(--color-primary-start), var(--color-primary-end)); box-shadow: var(--shadow-1); }
+.btn-primary:hover { filter: brightness(1.05); }
+.btn-ghost { color: var(--color-text); background: transparent; border-color: var(--color-border); }
+.btn-ghost:hover { background: var(--color-surface-2); }
+.btn-danger { color: #fff; background: var(--color-danger); }
+
+/* Pulse (not applied by default). Use only for real incidents.) */
+@keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(220,38,38,.45);} 70% { box-shadow: 0 0 0 10px rgba(220,38,38,0);} 100% { box-shadow: 0 0 0 0 rgba(220,38,38,0);} }
+.pulse { animation: pulseGlow var(--dur-slow) ease-in-out infinite; }
+
+/* Dividers and readable lists */
+.card-body hr { border: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--color-border), transparent); margin: var(--space-6) 0; }
+.card-body ul { margin: var(--space-4) 0 0 1.25rem; }
+.card-body p { margin: var(--space-3) 0; }
+
+/* Animations */
+html.js-enabled .collapsing { transition: height var(--dur-med) var(--ease), padding var(--dur-med) var(--ease); }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+  .kpi-row, .kpi-sticky .kpi-compact { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 640px) {
+  .fortress-root .container { padding: 0 var(--space-6); }
+  .kpi-row, .kpi-sticky .kpi-compact { grid-template-columns: 1fr; }
+  .card-header { grid-template-columns: 1fr; }
+  .card-toggle { justify-self: start; }
+}

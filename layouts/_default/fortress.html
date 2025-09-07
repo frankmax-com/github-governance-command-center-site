@@ -1,0 +1,20 @@
+{{ define "main" }}
+  <section class="fortress-root">
+    <header class="fortress-hero">
+      <div class="container fortress-article">
+        <h1>{{ .Title }}</h1>
+        {{ if .Description }}<p class="lead">{{ .Description }}</p>{{ end }}
+      </div>
+    </header>
+    <main class="container fortress-article" id="main-content">
+      {{ if .Content }}
+      <article class="card" style="margin: var(--space-8) 0;">
+        <div class="card-body">
+          {{ .Content | replaceRE "(?s)^[[:space:]]*<h1[^>]*>.*?</h1>" "" | safeHTML }}
+        </div>
+      </article>
+      {{ end }}
+      {{ partial "fortress-cards.html" . }}
+    </main>
+  </section>
+{{ end }}

@@ -1,0 +1,53 @@
+{{ define "main" }}
+<section class="fortress-root">
+  <div class="status-strip">
+    <div class="container strip-inner">
+      <span class="dot" aria-hidden="true"></span>
+  <a href="{{ "/threats" | relURL }}" class="btn btn-ghost">← Threats</a>
+      <span>{{ .Title }}</span>
+    </div>
+  </div>
+
+  <header class="fortress-hero">
+    <div class="container fortress-article">
+      <h1>{{ .Title }}</h1>
+      {{ if .Description }}<p class="lead">{{ .Description }}</p>{{ end }}
+      {{/* Compute a safe published date: prefer .PublishDate, then .Date, then .Lastmod, else now */}}
+      {{ $pub := .PublishDate }}
+      {{ if eq (time.Format "2006" $pub) "0001" }}
+        {{ $pub = .Date }}
+      {{ end }}
+      {{ if eq (time.Format "2006" $pub) "0001" }}
+        {{ $pub = .Lastmod }}
+      {{ end }}
+      {{ if eq (time.Format "2006" $pub) "0001" }}
+        {{ $pub = now }}
+      {{ end }}
+      <div class="kpi-row" aria-label="Threat details">
+        <div class="kpi"><div class="label">Severity</div><div class="value">{{ with .Params.severity }}{{ . }}{{ else }}n/a{{ end }}</div></div>
+        <div class="kpi"><div class="label">Published</div><div class="value">{{ time.Format "Jan 2, 2006" $pub }}</div></div>
+        <div class="kpi"><div class="label">Read time</div><div class="value">{{ .ReadingTime }} min</div></div>
+        <div class="kpi"><div class="label">Audience</div><div class="value">{{ with .Params.audience }}{{ . }}{{ else }}Security & Exec{{ end }}</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container fortress-article" id="main-content">
+    <article class="card" style="margin: var(--space-8) 0;">
+      <div class="card-body">
+        {{/* Strip a leading H1 if present to avoid duplicate titles */}}
+  {{ .Content | replaceRE "(?s)^[[:space:]]*<h1[^>]*>.*?</h1>" "" | safeHTML }}
+      </div>
+      <div class="card-footer">
+        <a class="btn btn-primary" href="{{ "contact" | relURL }}">Talk to a specialist</a>
+        <a class="btn btn-ghost" href="{{ "solutions" | relURL }}">Explore defenses</a>
+      </div>
+    </article>
+
+    <nav class="pager" style="display:flex;justify-content:space-between;gap:1rem;margin:var(--space-8) 0;">
+      {{ with .PrevInSection }}<a class="btn btn-ghost" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
+      {{ with .NextInSection }}<a class="btn btn-ghost" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}
+    </nav>
+  </main>
+</section>
+{{ end }}

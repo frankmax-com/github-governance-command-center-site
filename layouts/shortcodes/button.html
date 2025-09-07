@@ -1,0 +1,9 @@
+{{/*
+Button shortcode
+- Usage (example): button href="contact" style="primary" → "Text"
+- Styles: primary | ghost | danger
+*/}}
+{{ $href := .Get "href" | default "#" }}
+{{ $style := .Get "style" | default "primary" }}
+{{ $class := cond (eq $style "primary") "btn btn-primary" (cond (eq $style "ghost") "btn btn-ghost" (cond (eq $style "danger") "btn btn-danger" "btn")) }}
+<a class="{{ $class }}" href="{{ $href | relURL }}">{{ .Inner | markdownify }}</a>

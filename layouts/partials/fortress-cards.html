@@ -1,0 +1,158 @@
+{{/*
+Integration notes (Hugo):
+- Include CSS and JS via Hugo Pipes in base template:
+  {{ $fortressCSS := resources.Get "css/fortress.css" | resources.Minify | resources.Fingerprint }}
+  <link rel="stylesheet" href="{{ $fortressCSS.RelPermalink }}" integrity="{{ $fortressCSS.Data.Integrity }}" crossorigin="anonymous">
+  {{ $fortressJS := resources.Get "js/fortress-ui.js" | resources.Minify | resources.Fingerprint }}
+  <script defer src="{{ $fortressJS.RelPermalink }}" integrity="{{ $fortressJS.Data.Integrity }}" crossorigin="anonymous"></script>
+- Place this partial inside the article container where the page content should render the cards:
+  {{ partial "fortress-cards.html" . }}
+- Rendering multiple cards:
+  Preferred: range over .Params.fortress_cards (front-matter) or a data file.
+  Example front-matter structure:
+  ---
+  title: "Fortress Defense Solutions"
+  layout: "fortress"
+  fortress_cards:
+    - title: "Zero-Commit Data Firewall"
+      summary: "Prevents data leaks at the source"
+      timestamp: 2025-09-07T10:30:00Z
+      body: |
+        - AI firewall classifies commit payloads
+        - Immutable redaction replaces sensitive data
+      emergency: false
+    - title: "Sovereign Repo Enclaves"
+      summary: "Enforces jurisdictional data residency"
+      timestamp: 2025-09-06T16:00:00Z
+      body: |
+        - Geo-fenced repositories
+        - Policy-aware sharding
+      emergency: true
+  ---
+- Alternate: from data file (e.g., data/solutions.yaml) → {{ range .Site.Data.solutions.fortress_cards }} ... {{ end }}
+- SVG assets: store in assets/icons/ and inline via resources.Get and safeHTML (or use a partial for icons). Placeholders are indicated below.
+- Migration: Move long-form /solutions content into cards (title/summary in header; details in body). Keep the same permalink by leaving the page at content/en-xx/solutions.md and swapping template to include this partial.
+*/}}
+
+<section class="fortress-root" aria-labelledby="fortress-heading">
+  <div class="status-strip">
+    <div class="container strip-inner">
+      <span class="dot" aria-hidden="true"></span>
+      <span>
+        Threat Monitoring: Active —
+        {{ with .Lastmod }}
+          {{ $t := . }}
+          {{ $diff := sub now.Unix $t.Unix }}
+          {{ $mins := div $diff 60 }}
+          {{ if lt $mins 1 }}updated just now{{ else }}updated {{ $mins }}m ago{{ end }}
+        {{ else }}updated just now{{ end }}
+      </span>
+    </div>
+  </div>
+
+  <div class="container fortress-article">
+    <header class="fortress-hero">
+      <h1 id="fortress-heading">Fortress Defense Solutions</h1>
+      <p class="lead">Comprehensive governance and security across GitHub risk areas.</p>
+      <div class="kpi-row" aria-label="Key performance indicators">
+        <div class="kpi"><div class="label">ROI (3yr)</div><div class="value">480%</div></div>
+        <div class="kpi"><div class="label">Industries</div><div class="value">5+</div></div>
+        <div class="kpi"><div class="label">Providers</div><div class="value">17</div></div>
+        <div class="kpi"><div class="label">Success rate</div><div class="value">100%</div></div>
+      </div>
+    </header>
+
+    <div class="kpi-sticky" aria-hidden="true">
+      <div class="kpi-compact">
+        <div class="item"><span class="value">480%</span> ROI</div>
+        <div class="item"><span class="value">5+</span> industries</div>
+        <div class="item"><span class="value">17</span> providers</div>
+        <div class="item"><span class="value">100%</span> success</div>
+      </div>
+    </div>
+
+    <div class="fortress-accordion" role="list">
+      {{/* Loop over front-matter cards or fallback to nothing if absent */}}
+      {{ $cards := .Params.fortress_cards }}
+      {{ if $cards }}
+        {{ range $i, $card := $cards }}
+          <article class="card" role="listitem">
+            <header class="card-header">
+              <div>
+                <h2 class="card-title">{{ $card.title }}</h2>
+                <p class="card-summary">{{ with $card.summary }}{{ . }}{{ else }}Summary not provided.{{ end }}</p>
+                <div class="card-meta">Updated {{ with $card.timestamp }}{{ . | time.Format "Jan 2, 2006 3:04pm" }}{{ else }}recently{{ end }}</div>
+              </div>
+              <div
+                class="card-toggle"
+                role="button"
+                aria-expanded="false"
+                tabindex="0"
+                data-test="fortress-accordion-{{ $i }}"
+                aria-controls="card-body-{{ $i }}"
+                aria-label="Toggle details for {{ $card.title }}">
+                <!-- SVG icon placeholder: chevron down/up -->
+                <!-- include assets/icons/chevron.svg here via resources.Get or inline -->
+                <span aria-hidden="true">Details</span>
+              </div>
+            </header>
+
+            <div id="card-body-{{ $i }}" class="card-body">
+              <!-- Body content: convert markdown list into readable paragraphs/lists -->
+              {{ with $card.body }}
+                {{ . | markdownify }}
+              {{ else }}
+                <p>Details available upon request.</p>
+              {{ end }}
+            </div>
+
+            <footer class="card-footer">
+              <a class="btn btn-primary" href="{{ with $card.cta_primary }}{{ . }}{{ else }}{{ relURL "emergency-assessment" }}{{ end }}" data-test="fortress-primary-{{ $i }}">Schedule Assessment</a>
+              <a class="btn btn-ghost" href="{{ with $card.cta_secondary }}{{ . }}{{ else }}{{ relURL "contact" }}{{ end }}">Request Details</a>
+              {{ if $card.emergency }}
+                <a class="btn btn-danger pulse" href="{{ with $card.cta_emergency }}{{ . }}{{ else }}{{ relURL "crisis-hotline" }}{{ end }}">Request Response</a>
+              {{ end }}
+            </footer>
+          </article>
+        {{ end }}
+      {{ else }}
+        {{/* Content authors may inject cards here via Markdown blocks or shortcodes */}}
+        <article class="card" role="listitem">
+          <header class="card-header">
+            <div>
+              <h2 class="card-title">Example Solution</h2>
+              <p class="card-summary">A concise, one-sentence summary for quick scanning.</p>
+              <div class="card-meta">Updated {{ now | time.Format "Jan 2, 2006 3:04pm" }}</div>
+            </div>
+            <div class="card-toggle" role="button" aria-expanded="false" tabindex="0" data-test="fortress-accordion-0" aria-controls="card-body-0" aria-label="Toggle details for Example Solution">
+              <!-- SVG placeholder -->
+              <span aria-hidden="true">Details</span>
+            </div>
+          </header>
+          <div id="card-body-0" class="card-body">
+            <p>Move dense lists and technical details here. Keep the header summary short.</p>
+            <ul>
+              <li>Key capability A</li>
+              <li>Key capability B</li>
+              <li>Key capability C</li>
+            </ul>
+          </div>
+          <footer class="card-footer">
+            <a class="btn btn-primary" href="{{ relURL "emergency-assessment" }}" data-test="fortress-primary-0">Schedule Assessment</a>
+            <a class="btn btn-ghost" href="{{ relURL "contact" }}">Request Details</a>
+          </footer>
+        </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{/*
+QA checklist (acceptance tests):
+- Theme auto detection: 07:00 → light; 20:00 → dark; manual override persists across reloads.
+- Keyboard accessibility: Tab to each header; Space/Enter toggles; focus ring visible; arrow keys step between headers (if implemented).
+- Reduced-motion: animations/transitions disabled when prefers-reduced-motion is on.
+- Color contrast: body text ≥ 4.5:1 on both themes; buttons and links meet WCAG AA.
+- Mobile stacking: hero, KPI rows, and cards stack without overflow; touch targets ≥ 44px.
+- Accordion behavior: default collapsed with JS; no layout jank; smooth expand/collapse when motion allowed.
+*/}}

@@ -22,28 +22,24 @@ defaultContentLanguage = "en-xx"
 [menu]
   [[menu.main]]
   name = "Solutions"
-    url = "/"
-    weight = 10
+  url = "/solutions"
+  weight = 10
   [[menu.main]]
   name = "Governance"
-  url = "/solutions"
-    weight = 20
-  [[menu.main]]
-  name = "Risks"
-  url = "/risk-register"
-    weight = 25
-  [[menu.main]]
-  name = "Catalogue"
-  url = "/master-threat-catalogue"
-    weight = 28
+  url = "/"
+  weight = 20
   [[menu.main]]
   name = "Docs"
-  url = "/sitemap"
-    weight = 30
+  url = "/docs"
+  weight = 30
+  [[menu.main]]
+  name = "Threats"
+  url = "/threats"
+  weight = 35
   [[menu.main]]
   name = "Contact"
-  url = "/crisis-hotline"
-    weight = 40
+  url = "/contact"
+  weight = 40
 
 # Site parameters
 [params]

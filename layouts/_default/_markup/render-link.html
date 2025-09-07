@@ -1,0 +1,13 @@
+{{- $u := .Destination | safeURL -}}
+{{- $isAnchor := strings.HasPrefix $u "#" -}}
+{{- $isMail := strings.HasPrefix $u "mailto:" -}}
+{{- $isTel := strings.HasPrefix $u "tel:" -}}
+{{- $isExternal := or (strings.HasPrefix $u "http://") (strings.HasPrefix $u "https://") -}}
+
+{{- if or $isAnchor (or $isMail (or $isTel $isExternal)) -}}
+  <a href="{{ $u }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- else if strings.HasPrefix $u "/" -}}
+  <a href="{{ $u | relURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- else -}}
+  <a href="{{ $u }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- end -}}

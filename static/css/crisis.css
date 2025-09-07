@@ -1,0 +1,331 @@
+/* Crisis-Level Styling for GitHub Governance Command Center */
+
+:root {
+  --crisis-red: #dc2626;
+  --alert-orange: #ea580c;
+  --fortress-blue: #1e40af;
+  --survival-green: #16a34a;
+  --threat-black: #0f172a;
+  --warning-yellow: #eab308;
+  --gray-900: #111827;
+  --gray-800: #1f2937;
+  --gray-700: #374151;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--gray-900);
+  color: white;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Navigation Styles */
+.nav-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  transform: translateY(-1px);
+}
+
+.nav-link.text-red-400 {
+  animation: pulse-alert 2s infinite;
+}
+
+/* Crisis Alert Banner */
+.crisis-alert-banner {
+  background: linear-gradient(90deg, var(--crisis-red), var(--alert-orange), var(--crisis-red));
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Pulsing Alert Animation */
+@keyframes pulse-alert {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes flash-warning {
+  0%, 50% { background-color: var(--crisis-red); }
+  25%, 75% { background-color: var(--alert-orange); }
+}
+
+/* Crisis Alert Indicators */
+.crisis-alert {
+  background: linear-gradient(135deg, var(--crisis-red), var(--alert-orange));
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  animation: pulse-alert 2s infinite;
+  border: 2px solid var(--warning-yellow);
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+}
+
+.threat-level-catastrophic {
+  background: var(--crisis-red);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  animation: pulse-alert 1.5s infinite;
+}
+
+.threat-level-high {
+  background: var(--alert-orange);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+.threat-level-medium {
+  background: var(--warning-yellow);
+  color: var(--threat-black);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+/* Emergency Buttons */
+.emergency-btn {
+  background: linear-gradient(135deg, var(--crisis-red), #b91c1c);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+  animation: pulse-alert 3s infinite;
+}
+
+.emergency-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.6);
+}
+
+.crisis-hotline-btn {
+  background: linear-gradient(135deg, var(--alert-orange), #c2410c);
+  animation: flash-warning 2s infinite;
+}
+
+/* Countdown Timer */
+.extinction-countdown {
+  background: var(--threat-black);
+  color: var(--crisis-red);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 2px solid var(--crisis-red);
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.3);
+}
+
+.countdown-number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--crisis-red);
+  animation: pulse-alert 1s infinite;
+}
+
+/* Threat War Room */
+.threat-war-room {
+  background: linear-gradient(135deg, var(--threat-black), #1e293b);
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 2px solid var(--crisis-red);
+  position: relative;
+  overflow: hidden;
+}
+
+.threat-war-room::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--crisis-red), var(--alert-orange), var(--crisis-red));
+  animation: pulse-alert 2s infinite;
+}
+
+/* Industry Extinction Zones */
+.extinction-zone {
+  background: var(--threat-black);
+  border: 2px solid var(--crisis-red);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.extinction-zone:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+  border-color: var(--alert-orange);
+}
+
+.extinction-zone h3 {
+  color: var(--crisis-red);
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.extinction-zone .threat-count {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--crisis-red);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+/* Survival Metrics */
+.survival-metric {
+  background: var(--survival-green);
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin: 0.5rem;
+  box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+}
+
+.survival-metric .metric-number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+
+/* Attack Simulation */
+.attack-simulation {
+  background: var(--threat-black);
+  color: var(--crisis-red);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--crisis-red);
+  font-family: 'Courier New', monospace;
+  margin: 1rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.attack-simulation::before {
+  content: 'LIVE ATTACK DETECTED';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--crisis-red);
+  color: white;
+  padding: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-align: center;
+  animation: pulse-alert 1s infinite;
+}
+
+.attack-simulation .attack-line {
+  margin: 0.5rem 0;
+  padding-top: 1.5rem;
+}
+
+/* Fortress Architecture Display */
+.fortress-architecture {
+  background: linear-gradient(135deg, var(--fortress-blue), #1d4ed8);
+  color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.fortress-architecture h3 {
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.ai-provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.ai-provider {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .crisis-alert {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .emergency-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .countdown-number {
+    font-size: 2rem;
+  }
+  
+  .extinction-zone {
+    padding: 1rem;
+  }
+  
+  .ai-provider-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print Styles for Emergency Reports */
+@media print {
+  .crisis-alert,
+  .emergency-btn,
+  .crisis-hotline-btn {
+    background: #000 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

@@ -1,0 +1,3 @@
+[submodule "themes/frankmax"]
+	path = themes/frankmax
+	url = https://github.com/frankmax-com/frankmax-theme.git

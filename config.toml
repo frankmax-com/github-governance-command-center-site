@@ -1,0 +1,100 @@
+baseURL = "/"
+title = "🚨 GitHub Governance Command Center - EMERGENCY DEFENSE SYSTEM"
+theme = "frankmax"
+
+# Language settings
+defaultContentLanguage = "en-xx"
+
+[languages]
+  [languages.en-xx]
+    languageName = "English"
+    weight = 1
+    contentDir = "content/en-xx"
+    title = "🚨 GitHub Governance Command Center - EMERGENCY DEFENSE"
+
+  [languages.zh-sg]
+    languageName = "中文"
+    weight = 2
+    contentDir = "content/zh-sg"
+    title = "🚨 GitHub治理指挥中心 - 紧急防御系统"
+
+# Crisis-focused menu items
+[menu]
+  [[menu.main]]
+    name = "🚨 CRISIS ALERT"
+    url = "/"
+    weight = 10
+  [[menu.main]]
+    name = "ACTIVE THREATS"
+    url = "/threat-landscape"
+    weight = 20
+  [[menu.main]]
+    name = "EXTINCTION ZONES"
+    url = "/industries"
+    weight = 30
+  [[menu.main]]
+    name = "FORTRESS SOLUTIONS"
+    url = "/solutions"
+    weight = 40
+  [[menu.main]]
+    name = "SURVIVAL CALCULATOR"
+    url = "/roi-calculator"
+    weight = 50
+  [[menu.main]]
+    name = "ABOUT FORTRESS"
+    url = "/about"
+    weight = 55
+  [[menu.main]]
+    name = "📞 CRISIS HOTLINE"
+    url = "/crisis-hotline"
+    weight = 60
+
+# Site parameters
+[params]
+  description = "CRITICAL ALERT: Your GitHub is Under Attack - 45+ Fatal Vulnerabilities Detected. The ONLY fail-proof defense against catastrophic enterprise extinction."
+  logo = "images/logo.png"
+  favicon = "images/favicon.png"
+  email = "crisis@frankmax.digital"
+  whatsapp = "+6583157449"
+  location = "Global Crisis Response Center"
+  copyright = "© 2024 Frankmax GitHub Governance Command Center. All rights reserved. Your ONLY defense against GitHub's 45+ fatal attack vectors."
+
+[params.governance_command_center]
+  brand_name = "GitHub Governance Command Center"
+  tagline = "The ONLY Defense Against GitHub's 45+ Fatal Attack Vectors"
+  crisis_level = "CATASTROPHIC"
+  threat_count = "45+"
+  survival_rate = "0% without Command Center"
+  demo_url = "/emergency-assessment"
+  crisis_hotline = "/crisis-response"
+
+[params.enterprise_stats]
+  use_cases = "128+"
+  industries = 6
+  threat_categories = "45+"
+  roi_percentage = "480%"
+  annual_savings = "$3.2M"
+  ai_providers = 17
+  specialized_models = "100+"
+  success_rate = "100%"
+
+[params.crisis_colors]
+  primary = "#dc2626"    # Crisis Red
+  secondary = "#ea580c"  # Alert Orange
+  accent = "#1e40af"     # Fortress Blue
+  success = "#16a34a"    # Survival Green
+  background = "#0f172a" # Threat Black
+
+[params.threat_stats]
+  active_attacks = "45+"
+  extinction_probability = "100% without defense"
+  days_until_breach = "0"
+  companies_at_risk = "Fortune 500"
+  regulatory_fines = "$100M+"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+ignoreLogs = ['warning-goldmark-raw-html']

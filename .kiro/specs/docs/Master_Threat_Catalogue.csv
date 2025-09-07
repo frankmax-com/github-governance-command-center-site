@@ -1,0 +1,31 @@
+Threat Category,Severity
+Data Protection Gaps,High
+Governance & Compliance Failures,High
+Operational & Catastrophic Risks,High
+Security Shortcomings,High
+Resilience & Continuity Gaps,High
+Human Risk Factors,Medium
+Strategic Blind Spots,High
+Legal & Contractual Risks,High
+Third-Party Ecosystem Weakness,High
+Strategic & Business Continuity Threats,High
+Detection & Observability Gaps,Medium
+Catastrophic Attack Scenarios,Catastrophic
+Cultural & Governance Misalignment,Medium
+Forensic & Audit Weaknesses,High
+SaaS / Vendor Control Risks,High
+Advanced Threat Landscape,Catastrophic
+Organizational Blind Spots,Medium
+Human Factor Gaps (Deep Layer),Medium
+Business Model Fragility,High
+National Security & Geopolitical Risks,Catastrophic
+Catastrophic Dependency Risks,Catastrophic
+Identity & Access Weaknesses,High
+Temporal / Archival Risks,High
+Knowledge Graph Gaps,Medium
+AI-Assisted Attack Surfaces,High
+Jurisdictional / Legal Grey Zones,High
+Economic & Ecosystem Fragility,High
+Ethical & Social Risk Spillovers,Medium
+Meta-Governance Void,Catastrophic
+Civilization-Scale Externalities,Catastrophic

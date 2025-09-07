@@ -1,0 +1,82 @@
+{{ define "main" }}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+    <!-- 404 Header -->
+    <div class="mb-12">
+        <div class="text-8xl font-bold text-red-600 mb-4 animate-pulse">404</div>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">🚨 Page Under Attack</h1>
+        <p class="text-xl text-gray-300 mb-8">
+            The page you're looking for has been compromised or doesn't exist in our fortress.
+        </p>
+    </div>
+
+    <!-- Crisis Alert -->
+    <div class="crisis-alert mb-12">
+        🚨 NAVIGATION BREACH DETECTED 🚨<br>
+        Redirect to safety immediately - Your GitHub is still under attack
+    </div>
+
+    <!-- Emergency Navigation -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <a href="/" class="bg-red-900 bg-opacity-50 border border-red-600 rounded-lg p-6 hover:bg-opacity-70 transition-all">
+            <div class="text-3xl mb-2">🏠</div>
+            <h3 class="text-lg font-bold text-red-400 mb-2">Command Center</h3>
+            <p class="text-gray-300 text-sm">Return to crisis headquarters</p>
+        </a>
+
+        <a href="/threat-landscape" class="bg-orange-900 bg-opacity-50 border border-orange-600 rounded-lg p-6 hover:bg-opacity-70 transition-all">
+            <div class="text-3xl mb-2">🚨</div>
+            <h3 class="text-lg font-bold text-orange-400 mb-2">Active Threats</h3>
+            <p class="text-gray-300 text-sm">45+ attack vectors detected</p>
+        </a>
+
+        <a href="/solutions" class="bg-blue-900 bg-opacity-50 border border-blue-600 rounded-lg p-6 hover:bg-opacity-70 transition-all">
+            <div class="text-3xl mb-2">🛡️</div>
+            <h3 class="text-lg font-bold text-blue-400 mb-2">Fortress Solutions</h3>
+            <p class="text-gray-300 text-sm">Revolutionary defense systems</p>
+        </a>
+
+        <a href="/industries" class="bg-purple-900 bg-opacity-50 border border-purple-600 rounded-lg p-6 hover:bg-opacity-70 transition-all">
+            <div class="text-3xl mb-2">🏭</div>
+            <h3 class="text-lg font-bold text-purple-400 mb-2">Industry Zones</h3>
+            <p class="text-gray-300 text-sm">Sector-specific threats</p>
+        </a>
+
+        <a href="/emergency-assessment" class="bg-yellow-900 bg-opacity-50 border border-yellow-600 rounded-lg p-6 hover:bg-opacity-70 transition-all">
+            <div class="text-3xl mb-2">⚠️</div>
+            <h3 class="text-lg font-bold text-yellow-400 mb-2">Emergency Assessment</h3>
+            <p class="text-gray-300 text-sm">Immediate threat analysis</p>
+        </a>
+
+        <a href="/crisis-hotline" class="bg-red-900 bg-opacity-50 border border-red-600 rounded-lg p-6 hover:bg-opacity-70 transition-all">
+            <div class="text-3xl mb-2">📞</div>
+            <h3 class="text-lg font-bold text-red-400 mb-2">Crisis Hotline</h3>
+            <p class="text-gray-300 text-sm">24/7 emergency response</p>
+        </a>
+    </div>
+
+    <!-- Complete Site Map -->
+    <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-12">
+        <h2 class="text-2xl font-bold text-white mb-4">🗺️ Complete Site Navigation</h2>
+        <p class="text-gray-300 mb-4">Access all 10,000+ pages of GitHub governance intelligence:</p>
+        <a href="/sitemap" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+            View Complete Sitemap →
+        </a>
+    </div>
+
+    <!-- Emergency Response -->
+    <div class="bg-gradient-to-r from-red-900 to-orange-900 border border-red-600 rounded-lg p-8">
+        <h2 class="text-2xl font-bold text-white mb-4">🚨 Still Under Attack</h2>
+        <p class="text-gray-200 mb-6">
+            Even though this page is missing, your GitHub is still under active attack RIGHT NOW.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/emergency-assessment" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                🚨 Emergency Assessment
+            </a>
+            <a href="/crisis-hotline" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                📞 Crisis Response
+            </a>
+        </div>
+    </div>
+</div>
+{{ end }}

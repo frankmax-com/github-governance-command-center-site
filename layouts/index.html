@@ -1,0 +1,507 @@
+{{ define "main" }}
+<!-- Crisis Hero Section -->
+<section class="relative bg-gradient-to-br from-gray-900 via-red-900 to-gray-900 overflow-hidden">
+    <!-- Animated Background -->
+    <div class="absolute inset-0 opacity-20">
+        <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-600 animate-pulse"></div>
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="crisis-particles"></div>
+        </div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center">
+            <!-- Crisis Alert Badge -->
+            <div class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold mb-8 animate-pulse">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                CRITICAL ALERT: ACTIVE ATTACK DETECTED
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+                🚨 Your GitHub is<br>
+                <span class="text-red-400 animate-pulse">Under Attack</span>
+            </h1>
+
+            <!-- Subheadline -->
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+                <strong class="text-red-400">45+ Fatal Attack Vectors</strong> are targeting your company RIGHT NOW. 
+                GitHub Enterprise provides <strong class="text-red-400">ZERO defense</strong> against these catastrophic threats.
+            </p>
+
+            <!-- Threat Counter -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
+                <div class="bg-red-900 bg-opacity-50 p-4 rounded-lg border border-red-600">
+                    <div class="text-3xl font-bold text-red-400 animate-pulse">0</div>
+                    <div class="text-sm text-gray-300">Days Until Breach</div>
+                </div>
+                <div class="bg-orange-900 bg-opacity-50 p-4 rounded-lg border border-orange-600">
+                    <div class="text-3xl font-bold text-orange-400">45+</div>
+                    <div class="text-sm text-gray-300">Active Threats</div>
+                </div>
+                <div class="bg-yellow-900 bg-opacity-50 p-4 rounded-lg border border-yellow-600">
+                    <div class="text-3xl font-bold text-yellow-400">$100M+</div>
+                    <div class="text-sm text-gray-300">Regulatory Fines</div>
+                </div>
+                <div class="bg-red-900 bg-opacity-50 p-4 rounded-lg border border-red-600">
+                    <div class="text-3xl font-bold text-red-400 animate-pulse">0%</div>
+                    <div class="text-sm text-gray-300">Survival Rate</div>
+                </div>
+            </div>
+
+            <!-- Emergency CTAs -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                <a href="/emergency-assessment" class="emergency-btn bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 animate-pulse">
+                    🚨 EMERGENCY THREAT ASSESSMENT
+                </a>
+                <a href="/crisis-hotline" class="crisis-hotline-btn bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105">
+                    📞 CRISIS RESPONSE HOTLINE
+                </a>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="text-sm text-gray-400">
+                <p class="mb-2">🛡️ Protecting Fortune 500 companies from GitHub extinction events</p>
+                <p>⚡ 100% success rate - No customer has EVER been breached</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Immediate Threats Section -->
+<section class="py-16 bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                🚨 IMMEDIATE THREATS DETECTED
+            </h2>
+            <p class="text-xl text-gray-300">
+                These attack vectors are actively targeting your organization RIGHT NOW
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Civilization-Scale Threats -->
+            <div class="threat-card bg-red-900 bg-opacity-30 border border-red-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">💀</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-red-400">Civilization-Scale</h3>
+                        <p class="text-sm text-red-300">EXTINCTION LEVEL</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-4">Single-platform dependency collapse threatens global software supply chains</p>
+                <a href="/threats/civilization-scale-externalities" class="text-red-400 hover:text-red-300 font-medium">
+                    Learn More →
+                </a>
+            </div>
+
+            <!-- Meta-Governance Void -->
+            <div class="threat-card bg-red-900 bg-opacity-30 border border-red-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🔴</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-red-400">Meta-Governance Void</h3>
+                        <p class="text-sm text-red-300">CATASTROPHIC</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-4">No second-order controls guarantee settings cannot be changed without oversight</p>
+                <a href="/threats/meta-governance-void" class="text-red-400 hover:text-red-300 font-medium">
+                    Learn More →
+                </a>
+            </div>
+
+            <!-- Insider Threats -->
+            <div class="threat-card bg-orange-900 bg-opacity-30 border border-orange-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🔴</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-orange-400">Insider Threats</h3>
+                        <p class="text-sm text-orange-300">COMPANY KILLER</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-4">Malicious insiders exfiltrate IP and sabotage systems through GitHub access</p>
+                <a href="/threats/insider-threats" class="text-orange-400 hover:text-orange-300 font-medium">
+                    Learn More →
+                </a>
+            </div>
+
+            <!-- Data Protection Gaps -->
+            <div class="threat-card bg-orange-900 bg-opacity-30 border border-orange-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🟠</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-orange-400">Data Protection Gaps</h3>
+                        <p class="text-sm text-orange-300">COMPANY KILLER</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-4">Unprotected sensitive data leads to regulatory annihilation</p>
+                <a href="/threats/data-protection-gaps" class="text-orange-400 hover:text-orange-300 font-medium">
+                    Learn More →
+                </a>
+            </div>
+
+            <!-- Supply Chain Risks -->
+            <div class="threat-card bg-yellow-900 bg-opacity-30 border border-yellow-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-yellow-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🟠</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-yellow-400">Supply Chain Risks</h3>
+                        <p class="text-sm text-yellow-300">HIGH THREAT</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-4">Dependency poisoning and upstream compromise threaten enterprise systems</p>
+                <a href="/threats/supply-chain-risks" class="text-yellow-400 hover:text-yellow-300 font-medium">
+                    Learn More →
+                </a>
+            </div>
+
+            <!-- Compliance Failures -->
+            <div class="threat-card bg-orange-900 bg-opacity-30 border border-orange-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🔴</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-orange-400">Compliance Failures</h3>
+                        <p class="text-sm text-orange-300">COMPANY KILLER</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-4">No regulatory framework awareness leads to audit failures</p>
+                <a href="/threats/governance-compliance-failures" class="text-orange-400 hover:text-orange-300 font-medium">
+                    Learn More →
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="/threat-landscape" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                View All 45+ Active Threats →
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Target Audiences Section -->
+<section class="py-16 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                🎯 WHO'S AT RISK?
+            </h2>
+            <p class="text-xl text-gray-300">
+                Every role faces extinction-level threats from GitHub governance failures
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Individual Developers -->
+            <div class="audience-card bg-yellow-900 bg-opacity-30 border border-yellow-600 rounded-lg p-6 text-center hover:bg-opacity-50 transition-all">
+                <div class="text-4xl mb-4">👨‍💻</div>
+                <h3 class="text-lg font-bold text-yellow-400 mb-2">Individual Developers</h3>
+                <p class="text-sm text-yellow-300 mb-4">CAREER DESTROYER</p>
+                <p class="text-gray-300 text-sm mb-4">Solo, freelance, academic developers face career-ending vulnerabilities</p>
+                <a href="/audiences/individual-developers" class="text-yellow-400 hover:text-yellow-300 font-medium">
+                    Assess Risk →
+                </a>
+            </div>
+
+            <!-- Enterprise Engineers -->
+            <div class="audience-card bg-orange-900 bg-opacity-30 border border-orange-600 rounded-lg p-6 text-center hover:bg-opacity-50 transition-all">
+                <div class="text-4xl mb-4">⚙️</div>
+                <h3 class="text-lg font-bold text-orange-400 mb-2">Enterprise Engineers</h3>
+                <p class="text-sm text-orange-300 mb-4">COMPANY KILLER</p>
+                <p class="text-gray-300 text-sm mb-4">DevOps, SRE, platform architects face company-destroying threats</p>
+                <a href="/audiences/enterprise-engineers" class="text-orange-400 hover:text-orange-300 font-medium">
+                    Assess Risk →
+                </a>
+            </div>
+
+            <!-- Security Professionals -->
+            <div class="audience-card bg-red-900 bg-opacity-30 border border-red-600 rounded-lg p-6 text-center hover:bg-opacity-50 transition-all">
+                <div class="text-4xl mb-4">🛡️</div>
+                <h3 class="text-lg font-bold text-red-400 mb-2">Security Professionals</h3>
+                <p class="text-sm text-red-300 mb-4">CATASTROPHIC</p>
+                <p class="text-gray-300 text-sm mb-4">CISOs, compliance officers face catastrophic governance failures</p>
+                <a href="/audiences/security-professionals" class="text-red-400 hover:text-red-300 font-medium">
+                    Assess Risk →
+                </a>
+            </div>
+
+            <!-- C-Level Executives -->
+            <div class="audience-card bg-red-900 bg-opacity-30 border border-red-600 rounded-lg p-6 text-center hover:bg-opacity-50 transition-all">
+                <div class="text-4xl mb-4">👔</div>
+                <h3 class="text-lg font-bold text-red-400 mb-2">C-Level Executives</h3>
+                <p class="text-sm text-red-300 mb-4">EXTINCTION LEVEL</p>
+                <p class="text-gray-300 text-sm mb-4">CTOs, CFOs, CEOs face extinction-level governance failures</p>
+                <a href="/audiences/c-level-executives" class="text-red-400 hover:text-red-300 font-medium">
+                    Assess Risk →
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fortress Solutions Section -->
+<section class="py-16 bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                🛡️ THE ONLY SOLUTION: FORTRESS DEFENSE
+            </h2>
+            <p class="text-xl text-gray-300">
+                Revolutionary "rip the wheel off" approaches that make GitHub attacks impossible
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Zero-Commit Data Firewall -->
+            <div class="solution-card bg-blue-900 bg-opacity-30 border border-blue-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🔥</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-400">Zero-Commit Data Firewall</h3>
+                </div>
+                <p class="text-gray-300 mb-4">AI-powered pre-commit guardian that blocks sensitive data before it reaches repositories. Makes data breaches physically impossible.</p>
+                <div class="mb-4">
+                    <span class="text-sm text-blue-300 bg-blue-900 bg-opacity-50 px-2 py-1 rounded">17 AI Providers</span>
+                    <span class="text-sm text-blue-300 bg-blue-900 bg-opacity-50 px-2 py-1 rounded ml-2">100+ Models</span>
+                </div>
+                <a href="/solutions/zero-commit-data-firewall" class="text-blue-400 hover:text-blue-300 font-medium">
+                    Deploy Firewall →
+                </a>
+            </div>
+
+            <!-- Sovereign Repo Enclaves -->
+            <div class="solution-card bg-purple-900 bg-opacity-30 border border-purple-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🏛️</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-purple-400">Sovereign Repo Enclaves</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Cryptographic geofencing that enforces data residency laws. Code obeys laws like atoms crossing customs.</p>
+                <div class="mb-4">
+                    <span class="text-sm text-purple-300 bg-purple-900 bg-opacity-50 px-2 py-1 rounded">GDPR Compliant</span>
+                    <span class="text-sm text-purple-300 bg-purple-900 bg-opacity-50 px-2 py-1 rounded ml-2">Crypto Borders</span>
+                </div>
+                <a href="/solutions/sovereign-repo-enclaves" class="text-purple-400 hover:text-purple-300 font-medium">
+                    Deploy Enclaves →
+                </a>
+            </div>
+
+            <!-- Insider-Proof Governance Grid -->
+            <div class="solution-card bg-green-900 bg-opacity-30 border border-green-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🔒</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-green-400">Insider-Proof Governance Grid</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Nuclear launch code security for GitHub. Split-key control system makes insider attacks structurally impossible.</p>
+                <div class="mb-4">
+                    <span class="text-sm text-green-300 bg-green-900 bg-opacity-50 px-2 py-1 rounded">Multi-Sig</span>
+                    <span class="text-sm text-green-300 bg-green-900 bg-opacity-50 px-2 py-1 rounded ml-2">AI Monitoring</span>
+                </div>
+                <a href="/solutions/insider-proof-governance-grid" class="text-green-400 hover:text-green-300 font-medium">
+                    Deploy Grid →
+                </a>
+            </div>
+
+            <!-- Cryptographic Dependency Provenance -->
+            <div class="solution-card bg-indigo-900 bg-opacity-30 border border-indigo-600 rounded-lg p-6 hover:bg-opacity-50 transition-all">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mr-4">
+                        <span class="text-2xl">🔐</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-indigo-400">Dependency Provenance Grid</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Software supply chain customs checkpoint. Every dependency shows cryptographic passport before entry.</p>
+                <div class="mb-4">
+                    <span class="text-sm text-indigo-300 bg-indigo-900 bg-opacity-50 px-2 py-1 rounded">SBOM Ready</span>
+                    <span class="text-sm text-indigo-300 bg-indigo-900 bg-opacity-50 px-2 py-1 rounded ml-2">Sigstore</span>
+                </div>
+                <a href="/solutions/cryptographic-dependency-provenance" class="text-indigo-400 hover:text-indigo-300 font-medium">
+                    Deploy Provenance →
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="/solutions" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                View All Fortress Solutions →
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Industries at Risk Section -->
+<section class="py-16 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                🏭 EXTINCTION ZONES BY INDUSTRY
+            </h2>
+            <p class="text-xl text-gray-300">
+                Every industry faces unique GitHub governance threats
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Financial Services -->
+            <div class="industry-card bg-gradient-to-br from-yellow-900 to-orange-900 border border-yellow-600 rounded-lg p-6 hover:scale-105 transition-all">
+                <div class="text-4xl mb-4">🏦</div>
+                <h3 class="text-xl font-bold text-yellow-400 mb-2">Financial Services</h3>
+                <p class="text-yellow-300 text-sm mb-4">$2 Trillion at Risk</p>
+                <p class="text-gray-300 text-sm mb-4">Trading algorithms, payment systems, regulatory compliance</p>
+                <a href="/industries/financial-services" class="text-yellow-400 hover:text-yellow-300 font-medium">
+                    Assess Industry Risk →
+                </a>
+            </div>
+
+            <!-- Healthcare -->
+            <div class="industry-card bg-gradient-to-br from-red-900 to-pink-900 border border-red-600 rounded-lg p-6 hover:scale-105 transition-all">
+                <div class="text-4xl mb-4">🏥</div>
+                <h3 class="text-xl font-bold text-red-400 mb-2">Healthcare</h3>
+                <p class="text-red-300 text-sm mb-4">Patient Lives at Risk</p>
+                <p class="text-gray-300 text-sm mb-4">Medical devices, patient data, clinical trials</p>
+                <a href="/industries/healthcare" class="text-red-400 hover:text-red-300 font-medium">
+                    Assess Industry Risk →
+                </a>
+            </div>
+
+            <!-- Manufacturing -->
+            <div class="industry-card bg-gradient-to-br from-orange-900 to-red-900 border border-orange-600 rounded-lg p-6 hover:scale-105 transition-all">
+                <div class="text-4xl mb-4">🏭</div>
+                <h3 class="text-xl font-bold text-orange-400 mb-2">Manufacturing</h3>
+                <p class="text-orange-300 text-sm mb-4">Safety-Critical Systems</p>
+                <p class="text-gray-300 text-sm mb-4">Automotive, aerospace, industrial control</p>
+                <a href="/industries/manufacturing" class="text-orange-400 hover:text-orange-300 font-medium">
+                    Assess Industry Risk →
+                </a>
+            </div>
+
+            <!-- Technology -->
+            <div class="industry-card bg-gradient-to-br from-blue-900 to-purple-900 border border-blue-600 rounded-lg p-6 hover:scale-105 transition-all">
+                <div class="text-4xl mb-4">💻</div>
+                <h3 class="text-xl font-bold text-blue-400 mb-2">Technology</h3>
+                <p class="text-blue-300 text-sm mb-4">$10 Trillion Industry</p>
+                <p class="text-gray-300 text-sm mb-4">Algorithms, customer data, IP protection</p>
+                <a href="/industries/technology" class="text-blue-400 hover:text-blue-300 font-medium">
+                    Assess Industry Risk →
+                </a>
+            </div>
+
+            <!-- Retail -->
+            <div class="industry-card bg-gradient-to-br from-green-900 to-teal-900 border border-green-600 rounded-lg p-6 hover:scale-105 transition-all">
+                <div class="text-4xl mb-4">🛒</div>
+                <h3 class="text-xl font-bold text-green-400 mb-2">Retail</h3>
+                <p class="text-green-300 text-sm mb-4">$5 Trillion Customer Trust</p>
+                <p class="text-gray-300 text-sm mb-4">E-commerce, payments, supply chain</p>
+                <a href="/industries/retail" class="text-green-400 hover:text-green-300 font-medium">
+                    Assess Industry Risk →
+                </a>
+            </div>
+
+            <!-- Government -->
+            <div class="industry-card bg-gradient-to-br from-purple-900 to-indigo-900 border border-purple-600 rounded-lg p-6 hover:scale-105 transition-all">
+                <div class="text-4xl mb-4">🏛️</div>
+                <h3 class="text-xl font-bold text-purple-400 mb-2">Government</h3>
+                <p class="text-purple-300 text-sm mb-4">National Security</p>
+                <p class="text-gray-300 text-sm mb-4">Classified systems, citizen services</p>
+                <a href="/industries/government" class="text-purple-400 hover:text-purple-300 font-medium">
+                    Assess Industry Risk →
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="/industries" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                View All Industry Threats →
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="py-16 bg-gradient-to-br from-red-900 via-orange-900 to-red-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+            🚨 EMERGENCY RESPONSE REQUIRED
+        </h2>
+        <p class="text-xl text-gray-200 mb-8">
+            Every minute of delay increases your extinction risk. Your GitHub is under active attack RIGHT NOW.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            <a href="/emergency-assessment" class="emergency-btn bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 animate-pulse">
+                🚨 EMERGENCY THREAT ASSESSMENT
+            </a>
+            <a href="/crisis-hotline" class="crisis-hotline-btn bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105">
+                📞 CRISIS RESPONSE HOTLINE
+            </a>
+        </div>
+
+        <p class="text-sm text-gray-300">
+            Command Center is your ONLY defense against corporate extinction.
+        </p>
+    </div>
+</section>
+
+<!-- Crisis Particles CSS -->
+<style>
+.crisis-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.crisis-particles::before,
+.crisis-particles::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #dc2626;
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.crisis-particles::before {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.crisis-particles::after {
+    top: 60%;
+    right: 20%;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.5; }
+}
+
+.threat-card:hover,
+.audience-card:hover,
+.solution-card:hover,
+.industry-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+</style>
+{{ end }}

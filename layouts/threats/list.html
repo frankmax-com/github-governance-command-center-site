@@ -1,0 +1,102 @@
+{{ define "main" }}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Threat Landscape Header -->
+    <div class="text-center mb-12">
+        <div class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold mb-6 animate-pulse">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            ACTIVE THREAT INTELLIGENCE
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ .Title }}</h1>
+        <p class="text-xl text-gray-300 max-w-4xl mx-auto">{{ .Description }}</p>
+    </div>
+
+    <!-- Threat Level Categories -->
+    <div class="mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-red-900 bg-opacity-50 p-4 rounded-lg border border-red-600 text-center">
+                <div class="text-2xl font-bold text-red-400 animate-pulse">💀</div>
+                <div class="text-sm text-red-300 font-bold">EXTINCTION LEVEL</div>
+                <div class="text-xs text-gray-400">Civilization Threats</div>
+            </div>
+            <div class="bg-red-800 bg-opacity-50 p-4 rounded-lg border border-red-500 text-center">
+                <div class="text-2xl font-bold text-red-400">🔴</div>
+                <div class="text-sm text-red-300 font-bold">CATASTROPHIC</div>
+                <div class="text-xs text-gray-400">Enterprise Killers</div>
+            </div>
+            <div class="bg-orange-900 bg-opacity-50 p-4 rounded-lg border border-orange-600 text-center">
+                <div class="text-2xl font-bold text-orange-400">🟠</div>
+                <div class="text-sm text-orange-300 font-bold">COMPANY KILLER</div>
+                <div class="text-xs text-gray-400">Business Destroyers</div>
+            </div>
+            <div class="bg-yellow-900 bg-opacity-50 p-4 rounded-lg border border-yellow-600 text-center">
+                <div class="text-2xl font-bold text-yellow-400">🟡</div>
+                <div class="text-sm text-yellow-300 font-bold">HIGH THREAT</div>
+                <div class="text-xs text-gray-400">Career Destroyers</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="prose prose-lg prose-invert max-w-none mb-16">
+        {{ .Content }}
+    </div>
+
+    <!-- Threat List -->
+    {{ if .Pages }}
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-white mb-8">🚨 Active Threat Categories</h2>
+        <div class="space-y-6">
+            {{ range .Pages.ByParam "severity" }}
+            <div class="threat-card bg-gray-800 border-l-4 {{ if eq .Params.severity "EXTINCTION LEVEL" }}border-red-600 bg-red-900 bg-opacity-20{{ else if eq .Params.severity "CATASTROPHIC" }}border-red-500 bg-red-800 bg-opacity-20{{ else if eq .Params.severity "COMPANY KILLER" }}border-orange-500 bg-orange-900 bg-opacity-20{{ else if eq .Params.severity "HIGH THREAT" }}border-yellow-500 bg-yellow-900 bg-opacity-20{{ else }}border-gray-500{{ end }} rounded-lg p-6 hover:bg-opacity-30 transition-all">
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-3">
+                            <h3 class="text-xl font-bold text-white mr-4">
+                                <a href="{{ .Permalink }}" class="hover:text-red-400">{{ .Title }}</a>
+                            </h3>
+                            <span class="px-3 py-1 text-xs font-bold rounded {{ if eq .Params.severity "EXTINCTION LEVEL" }}bg-red-600 text-white animate-pulse{{ else if eq .Params.severity "CATASTROPHIC" }}bg-red-500 text-white{{ else if eq .Params.severity "COMPANY KILLER" }}bg-orange-500 text-white{{ else if eq .Params.severity "HIGH THREAT" }}bg-yellow-500 text-black{{ else }}bg-gray-500 text-white{{ end }}">
+                                {{ .Params.severity }}
+                            </span>
+                            {{ if .Params.category }}
+                            <span class="px-3 py-1 text-xs font-bold rounded bg-gray-600 text-white ml-2">
+                                {{ .Params.category }}
+                            </span>
+                            {{ end }}
+                        </div>
+                        {{ if .Description }}
+                        <p class="text-gray-300 mb-4">{{ .Description }}</p>
+                        {{ end }}
+                        <div class="flex items-center justify-between">
+                            <a href="{{ .Permalink }}" class="text-red-400 hover:text-red-300 font-medium">
+                                Analyze Threat →
+                            </a>
+                            {{ if .Params.threat_id }}
+                            <span class="text-xs text-gray-500">ID: {{ .Params.threat_id }}</span>
+                            {{ end }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Emergency Response -->
+    <div class="bg-gradient-to-r from-red-900 to-orange-900 border border-red-600 rounded-lg p-8 text-center">
+        <h2 class="text-2xl font-bold text-white mb-4">🚨 Immediate Threat Response Required</h2>
+        <p class="text-gray-200 mb-6">These threats are actively targeting your organization RIGHT NOW.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/emergency-assessment" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                🚨 Emergency Threat Assessment
+            </a>
+            <a href="/crisis-hotline" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                📞 Crisis Response Hotline
+            </a>
+            <a href="/solutions" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                🛡️ Deploy Defenses
+            </a>
+        </div>
+    </div>
+</div>
+{{ end }}

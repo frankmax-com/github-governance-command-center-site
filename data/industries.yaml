@@ -1,0 +1,162 @@
+extinction_zones:
+  financial_services:
+    name: "Financial Services - UNDER SIEGE"
+    icon: "💀"
+    threat_level: "CATASTROPHIC"
+    threat_count: 22
+    survival_rate: "0% without Command Center"
+    extinction_threats:
+      - "Nation-State Banking Attacks"
+      - "Regulatory Annihilation Fines"
+      - "Trading System Sabotage"
+      - "Customer Data Apocalypse"
+    crisis_scenarios:
+      - "$4B+ SOX Violation Fine"
+      - "Complete Trading System Compromise"
+      - "Basel III Compliance Failure"
+      - "PCI-DSS Breach = $100M+ Fines"
+    compliance_frameworks:
+      - "SOX (Sarbanes-Oxley Act)"
+      - "PCI DSS (Payment Card Industry)"
+      - "Basel III Banking Regulations"
+      - "GDPR Financial Data Protection"
+    use_cases:
+      - "Trading Algorithm Governance"
+      - "Risk Model Management"
+      - "AML Detection Systems"
+      - "Regulatory Reporting Automation"
+
+  healthcare:
+    name: "Healthcare - PATIENT LIVES AT RISK"
+    icon: "💔"
+    threat_level: "LIFE-THREATENING"
+    threat_count: 22
+    survival_rate: "0% without Command Center"
+    extinction_threats:
+      - "Patient Data Breach"
+      - "Medical Device Hacking"
+      - "FDA Compliance Failure"
+      - "Clinical Trial Sabotage"
+    crisis_scenarios:
+      - "500M Patient Records Stolen"
+      - "Pacemaker Hacking Deaths"
+      - "$100M HIPAA Violation"
+      - "Clinical Trial Data Corruption"
+    compliance_frameworks:
+      - "HIPAA (Health Insurance Portability)"
+      - "FDA 21 CFR Part 11"
+      - "GCP (Good Clinical Practice)"
+      - "GDPR Health Data Protection"
+    use_cases:
+      - "Electronic Health Records"
+      - "Medical Device Software"
+      - "Clinical Trial Management"
+      - "Pharmaceutical R&D"
+
+  manufacturing:
+    name: "Manufacturing - SAFETY SYSTEMS COMPROMISED"
+    icon: "⚙️"
+    threat_level: "CATASTROPHIC"
+    threat_count: 22
+    survival_rate: "0% without Command Center"
+    extinction_threats:
+      - "Autonomous Vehicle Crashes"
+      - "Factory Safety System Failures"
+      - "Supply Chain Disruption"
+      - "Quality Control Sabotage"
+    crisis_scenarios:
+      - "ISO 26262 Failure = Vehicle Recalls"
+      - "Factory Explosion from Hacked Systems"
+      - "Supply Chain Poisoning"
+      - "Product Liability Lawsuits"
+    compliance_frameworks:
+      - "ISO 26262 (Automotive Safety)"
+      - "DO-178C (Aviation Software)"
+      - "IEC 61508 (Functional Safety)"
+      - "ITAR (Export Control)"
+    use_cases:
+      - "Autonomous Vehicle Software"
+      - "Industrial Control Systems"
+      - "Quality Management Systems"
+      - "Supply Chain Tracking"
+
+  technology:
+    name: "Technology - INTELLECTUAL PROPERTY THEFT"
+    icon: "💻"
+    threat_level: "CATASTROPHIC"
+    threat_count: 22
+    survival_rate: "0% without Command Center"
+    extinction_threats:
+      - "Source Code Theft"
+      - "Algorithm Exfiltration"
+      - "Customer Data Breaches"
+      - "Competitive Intelligence Loss"
+    crisis_scenarios:
+      - "Core Algorithm Stolen by Competitors"
+      - "Customer Database Sold on Dark Web"
+      - "Trade Secret Litigation"
+      - "Stock Price Collapse from Breach"
+    compliance_frameworks:
+      - "SOC 2 (Security Controls)"
+      - "ISO 27001 (Information Security)"
+      - "GDPR (Data Protection)"
+      - "CCPA (California Privacy Act)"
+    use_cases:
+      - "Software Development Lifecycle"
+      - "AI/ML Model Management"
+      - "Customer Data Protection"
+      - "Intellectual Property Security"
+
+  retail:
+    name: "Retail - CUSTOMER TRUST ANNIHILATION"
+    icon: "🛒"
+    threat_level: "COMPANY-KILLER"
+    threat_count: 22
+    survival_rate: "0% without Command Center"
+    extinction_threats:
+      - "Payment System Breaches"
+      - "Customer Data Theft"
+      - "Supply Chain Attacks"
+      - "E-commerce Platform Compromise"
+    crisis_scenarios:
+      - "Credit Card Data Stolen = $200M+ Fines"
+      - "Customer Exodus from Breach"
+      - "Supply Chain Poisoning"
+      - "Brand Reputation Destruction"
+    compliance_frameworks:
+      - "PCI DSS (Payment Card Security)"
+      - "GDPR (Customer Data Protection)"
+      - "CCPA (California Privacy Act)"
+      - "SOX (Financial Reporting)"
+    use_cases:
+      - "E-commerce Platform Security"
+      - "Payment Processing Systems"
+      - "Customer Data Management"
+      - "Supply Chain Visibility"
+
+  government:
+    name: "Government - NATIONAL SECURITY BREACH"
+    icon: "🏛️"
+    threat_level: "NATIONAL SECURITY"
+    threat_count: 18
+    survival_rate: "0% without Command Center"
+    extinction_threats:
+      - "Classified Information Leaks"
+      - "Critical Infrastructure Attacks"
+      - "Citizen Data Breaches"
+      - "Election System Compromise"
+    crisis_scenarios:
+      - "Classified Documents on GitHub"
+      - "Power Grid Control System Hacked"
+      - "Citizen SSN Database Stolen"
+      - "Election Results Manipulation"
+    compliance_frameworks:
+      - "FedRAMP (Federal Risk Management)"
+      - "FISMA (Federal Information Security)"
+      - "ITAR (Export Administration)"
+      - "CJIS (Criminal Justice Information)"
+    use_cases:
+      - "Classified System Development"
+      - "Critical Infrastructure Protection"
+      - "Citizen Service Platforms"
+      - "Emergency Response Systems"

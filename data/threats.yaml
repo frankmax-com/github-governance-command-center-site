@@ -1,0 +1,111 @@
+catastrophic_threats:
+  - name: "Civilization-Scale Externalities"
+    severity: "EXTINCTION LEVEL"
+    icon: "💀"
+    description: "Single-platform dependency collapse could seize global software supply chains"
+    impact: "Civilization-ending collapse"
+    examples:
+      - "GitHub downtime = world's software supply chains seize"
+      - "Critical infrastructure cascade failure"
+      - "Global economic system breakdown"
+    
+  - name: "Meta-Governance Void"
+    severity: "CATASTROPHIC"
+    icon: "🔴"
+    description: "No second-order controls guarantee settings cannot be changed without oversight"
+    impact: "Complete governance capture"
+    examples:
+      - "Rogue admin rewrites all policies"
+      - "Silent governance policy changes"
+      - "Undetected control system takeover"
+
+  - name: "National Security & Geopolitical Risks"
+    severity: "CATASTROPHIC"
+    icon: "🔴"
+    description: "Nation-state attacks and geopolitical restrictions threaten enterprise survival"
+    impact: "Corporate extinction through state action"
+    examples:
+      - "Sanctions compliance violations"
+      - "Data sovereignty conflicts"
+      - "Nation-state supply chain attacks"
+
+company_killer_threats:
+  - name: "Data Protection Gaps"
+    severity: "COMPANY KILLER"
+    icon: "🟠"
+    description: "Unprotected sensitive data leads to regulatory annihilation"
+    impact: "Regulatory fines ($100M+), customer trust loss, IP theft"
+    examples:
+      - "PII/PHI commits trigger GDPR/HIPAA violations"
+      - "Cross-border data residency violations"
+      - "Weak multi-tenant isolation exposures"
+
+  - name: "Governance & Compliance Failures"
+    severity: "COMPANY KILLER"
+    icon: "🟠"
+    description: "No regulatory framework awareness leads to audit failures"
+    impact: "Regulatory violations, audit failures, legal liability"
+    examples:
+      - "SOX violation = $100M fine + criminal liability"
+      - "No immutable audit logs for regulators"
+      - "Branch protection bypasses enable violations"
+
+  - name: "Catastrophic Attack Scenarios"
+    severity: "COMPANY KILLER"
+    icon: "🟠"
+    description: "Repo hijacking and dependency substitution enable mass compromise"
+    impact: "Business extinction, reputation collapse"
+    examples:
+      - "Compromised admin nukes entire enterprise repos"
+      - "Supply chain poisoning across 50,000 repos"
+      - "Shadow repos bypass all governance"
+
+  - name: "Insider Threats"
+    severity: "COMPANY KILLER"
+    icon: "🟠"
+    description: "Malicious insiders exfiltrate IP and sabotage systems"
+    impact: "IP theft, sabotage, data exfiltration"
+    examples:
+      - "Crown jewel IP exfiltration while you sleep"
+      - "Overprivileged maintainers with god rights"
+      - "No behavioral anomaly detection"
+
+career_destroyer_threats:
+  - name: "Human Risk Factors"
+    severity: "CAREER DESTROYER"
+    icon: "🟡"
+    description: "Process failures and accountability gaps destroy careers"
+    impact: "Personal termination, career destruction"
+    examples:
+      - "Rubber-stamp approvals enable breaches"
+      - "Maintainer burnout leads to abandoned repos"
+      - "Training gaps cause compliance failures"
+
+real_breach_examples:
+  - name: "Equifax"
+    impact: "$4B+ losses + CEO fired"
+    description: "Data breach affecting 147 million people"
+    
+  - name: "SolarWinds"
+    impact: "18,000 organizations compromised"
+    description: "Supply chain attack through software updates"
+    
+  - name: "Colonial Pipeline"
+    impact: "Critical infrastructure shutdown"
+    description: "Ransomware attack shut down major fuel pipeline"
+    
+  - name: "Marriott"
+    impact: "500M records stolen + $124M fine"
+    description: "Guest data breach across hotel chain"
+
+github_enterprise_failures:
+  - "No native enforcement of industry regulations (SOX, HIPAA, PCI-DSS)"
+  - "Audit trails exist but aren't regulator-ready"
+  - "No built-in data residency or cross-border compliance"
+  - "Lacks fine-grained access segmentation"
+  - "Cannot enforce zero-trust repo segmentation"
+  - "Limited dependency scanning with blind spots"
+  - "No tamper-proof vendor contribution verification"
+  - "Cannot detect sensitive business IP natively"
+  - "Poor protection against intentional insider leaks"
+  - "No repo criticality awareness for disaster recovery"

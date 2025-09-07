@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    
+    <!-- Crisis-Level Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Crisis Theme CSS -->
+    <link href="/css/crisis.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Crisis Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Crisis Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Crisis Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CRISIS123"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-CRISIS123');
+    </script>
+    
+    <!-- Crisis Alert Meta -->
+    <meta property="og:title" content="{{ .Title }}">
+    <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ .Permalink }}">
+    <meta property="og:image" content="{{ .Site.BaseURL }}/images/crisis-alert.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ .Title }}">
+    <meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta name="twitter:image" content="{{ .Site.BaseURL }}/images/crisis-alert.png">
+    
+    <!-- Crisis Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "GitHub Governance Command Center",
+        "description": "{{ .Site.Params.description }}",
+        "url": "{{ .Site.BaseURL }}",
+        "logo": "{{ .Site.BaseURL }}/images/logo.png",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "{{ .Site.Params.whatsapp }}",
+            "contactType": "Emergency Response"
+        }
+    }
+    </script>
+</head>
+
+<body class="h-full bg-gray-900 text-white font-inter">
+    <!-- Crisis Alert Banner -->
+    <div class="crisis-alert-banner bg-red-600 text-white py-2 px-4 text-center text-sm font-bold animate-pulse">
+        🚨 ACTIVE THREAT DETECTED: Your GitHub is under attack RIGHT NOW - Emergency Response Required
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="bg-gray-800 border-b border-red-600 sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="{{ .Site.BaseURL }}" class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white">Frankmax<span class="text-red-500">.</span></span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    {{ range .Site.Menus.main }}
+                    <a href="{{ .URL }}" class="nav-link {{ if eq .Name "🚨 CRISIS ALERT" }}text-red-400 animate-pulse{{ else if eq .Name "📞 CRISIS HOTLINE" }}text-orange-400 font-bold{{ else }}text-gray-300 hover:text-white{{ end }} px-3 py-2 text-sm font-medium transition-colors">
+                        {{ .Name }}
+                    </a>
+                    {{ end }}
+                </div>
+
+                <!-- Language Switcher -->
+                <div class="hidden md:flex items-center space-x-4">
+                    {{ if hugo.IsMultilingual }}
+                    <div class="flex space-x-2">
+                        {{ if eq $.Site.Language.Lang "en-xx" }}
+                        <span class="px-3 py-1 bg-red-600 text-white rounded text-sm font-bold">English</span>
+                        <a href="/zh-sg/" class="px-3 py-1 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded text-sm transition-colors">中文</a>
+                        {{ else }}
+                        <a href="/en-xx/" class="px-3 py-1 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded text-sm transition-colors">English</a>
+                        <span class="px-3 py-1 bg-red-600 text-white rounded text-sm font-bold">中文</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                    
+                    <!-- Emergency Button -->
+                    <a href="/emergency-assessment" class="emergency-btn bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                        🚨 EMERGENCY
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button type="button" class="mobile-menu-button text-gray-300 hover:text-white p-2">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div class="mobile-menu hidden md:hidden pb-4">
+                {{ range .Site.Menus.main }}
+                <a href="{{ .URL }}" class="block px-3 py-2 text-base font-medium {{ if eq .Name "🚨 CRISIS ALERT" }}text-red-400{{ else if eq .Name "📞 CRISIS HOTLINE" }}text-orange-400{{ else }}text-gray-300 hover:text-white{{ end }}">
+                    {{ .Name }}
+                </a>
+                {{ end }}
+                
+                <!-- Mobile Language Switcher -->
+                {{ if hugo.IsMultilingual }}
+                <div class="px-3 py-2">
+                    <div class="flex space-x-2">
+                        {{ if eq $.Site.Language.Lang "en-xx" }}
+                        <span class="px-3 py-1 bg-red-600 text-white rounded text-sm font-bold flex-1 text-center">English</span>
+                        <a href="/zh-sg/" class="px-3 py-1 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded text-sm flex-1 text-center transition-colors">中文</a>
+                        {{ else }}
+                        <a href="/en-xx/" class="px-3 py-1 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded text-sm flex-1 text-center transition-colors">English</a>
+                        <span class="px-3 py-1 bg-red-600 text-white rounded text-sm font-bold flex-1 text-center">中文</span>
+                        {{ end }}
+                    </div>
+                </div>
+                {{ end }}
+                
+                <div class="px-3 py-2">
+                    <a href="/emergency-assessment" class="emergency-btn bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold block text-center">
+                        🚨 EMERGENCY ASSESSMENT
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <!-- Crisis Footer -->
+    <footer class="bg-gray-800 border-t border-red-600 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Emergency Contact -->
+                <div>
+                    <h3 class="text-lg font-bold text-red-400 mb-4">🚨 EMERGENCY RESPONSE</h3>
+                    <div class="space-y-2">
+                        <p class="text-sm text-gray-300">
+                            <i class="fas fa-phone text-red-400 mr-2"></i>
+                            Crisis Hotline: {{ .Site.Params.whatsapp }}
+                        </p>
+                        <p class="text-sm text-gray-300">
+                            <i class="fas fa-envelope text-red-400 mr-2"></i>
+                            {{ .Site.Params.email }}
+                        </p>
+                        <p class="text-sm text-gray-300">
+                            <i class="fas fa-globe text-red-400 mr-2"></i>
+                            {{ .Site.Params.location }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Threat Categories -->
+                <div>
+                    <h3 class="text-lg font-bold text-orange-400 mb-4">ACTIVE THREATS</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="/threats/civilization-scale-externalities" class="hover:text-white">💀 Civilization-Scale</a></li>
+                        <li><a href="/threats/meta-governance-void" class="hover:text-white">🔴 Meta-Governance</a></li>
+                        <li><a href="/threats/insider-threats" class="hover:text-white">🔴 Insider Threats</a></li>
+                        <li><a href="/threats/supply-chain-risks" class="hover:text-white">🟠 Supply Chain</a></li>
+                        <li><a href="/threat-landscape" class="hover:text-white text-red-400">View All 45+ Threats →</a></li>
+                    </ul>
+                </div>
+
+                <!-- Industries -->
+                <div>
+                    <h3 class="text-lg font-bold text-blue-400 mb-4">EXTINCTION ZONES</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="/industries/financial-services" class="hover:text-white">🏦 Financial Services</a></li>
+                        <li><a href="/industries/healthcare" class="hover:text-white">🏥 Healthcare</a></li>
+                        <li><a href="/industries/manufacturing" class="hover:text-white">🏭 Manufacturing</a></li>
+                        <li><a href="/industries/technology" class="hover:text-white">💻 Technology</a></li>
+                        <li><a href="/industries" class="hover:text-white text-blue-400">View All Industries →</a></li>
+                    </ul>
+                </div>
+
+                <!-- Solutions -->
+                <div>
+                    <h3 class="text-lg font-bold text-green-400 mb-4">FORTRESS SOLUTIONS</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="/solutions/zero-commit-data-firewall" class="hover:text-white">🔥 Data Firewall</a></li>
+                        <li><a href="/solutions/sovereign-repo-enclaves" class="hover:text-white">🏛️ Repo Enclaves</a></li>
+                        <li><a href="/solutions/insider-proof-governance-grid" class="hover:text-white">🔒 Governance Grid</a></li>
+                        <li><a href="/solutions/cryptographic-dependency-provenance" class="hover:text-white">🔐 Dependency Provenance</a></li>
+                        <li><a href="/solutions" class="hover:text-white text-green-400">View All Solutions →</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Crisis Stats -->
+            <div class="border-t border-gray-700 mt-8 pt-8">
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-center">
+                    <div class="bg-red-900 bg-opacity-50 p-3 rounded">
+                        <div class="text-2xl font-bold text-red-400">{{ .Site.Params.enterprise_stats.threat_categories }}</div>
+                        <div class="text-xs text-gray-400">Active Threats</div>
+                    </div>
+                    <div class="bg-orange-900 bg-opacity-50 p-3 rounded">
+                        <div class="text-2xl font-bold text-orange-400">{{ .Site.Params.enterprise_stats.use_cases }}</div>
+                        <div class="text-xs text-gray-400">Use Cases</div>
+                    </div>
+                    <div class="bg-blue-900 bg-opacity-50 p-3 rounded">
+                        <div class="text-2xl font-bold text-blue-400">{{ .Site.Params.enterprise_stats.industries }}</div>
+                        <div class="text-xs text-gray-400">Industries</div>
+                    </div>
+                    <div class="bg-green-900 bg-opacity-50 p-3 rounded">
+                        <div class="text-2xl font-bold text-green-400">{{ .Site.Params.enterprise_stats.roi_percentage }}</div>
+                        <div class="text-xs text-gray-400">ROI</div>
+                    </div>
+                    <div class="bg-purple-900 bg-opacity-50 p-3 rounded">
+                        <div class="text-2xl font-bold text-purple-400">{{ .Site.Params.enterprise_stats.ai_providers }}</div>
+                        <div class="text-xs text-gray-400">AI Providers</div>
+                    </div>
+                    <div class="bg-yellow-900 bg-opacity-50 p-3 rounded">
+                        <div class="text-2xl font-bold text-yellow-400">{{ .Site.Params.enterprise_stats.success_rate }}</div>
+                        <div class="text-xs text-gray-400">Success Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                {{ .Site.Params.copyright }}
+            </div>
+        </div>
+    </footer>
+
+    <!-- Crisis JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+
+        // Crisis countdown timer
+        function updateCountdown() {
+            const countdownElements = document.querySelectorAll('.countdown-number');
+            countdownElements.forEach(el => {
+                if (el.textContent === '0') {
+                    el.style.animation = 'pulse-alert 0.5s infinite';
+                }
+            });
+        }
+        
+        // Crisis alert animations
+        function initCrisisAlerts() {
+            const alerts = document.querySelectorAll('.crisis-alert');
+            alerts.forEach(alert => {
+                alert.style.animation = 'pulse-alert 2s infinite';
+            });
+        }
+
+        // Initialize crisis features
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCountdown();
+            initCrisisAlerts();
+        });
+    </script>
+</body>
+</html>
